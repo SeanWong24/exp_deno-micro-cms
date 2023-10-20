@@ -6,6 +6,7 @@ import {
   Body,
   Controller,
   CorsBuilder,
+  Delete,
   Get,
   Post,
   Req,
@@ -39,6 +40,16 @@ export class DBController {
     if (!path) return;
     const keyArray = path.split("/");
     return await KV.set(keyArray, value);
+  }
+
+  @Delete(/.*/)
+  async deleteValue(@Req() request: Request) {
+    const path = new URL(request.url).pathname.slice(
+      `${DB_CONTROLLER_PATH}/`.length,
+    );
+    if (!path) return;
+    const keyArray = path.split("/");
+    return await KV.delete(keyArray);
   }
 }
 
