@@ -15,7 +15,7 @@ export class DBController {
     );
     if (!path) return;
     const keyArray = path.split("/");
-    return (await KV.get(keyArray)).value;
+    return (await KV.get(keyArray)).value ?? undefined;
   }
 
   @Post(/.*/)
