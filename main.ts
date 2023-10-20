@@ -8,40 +8,43 @@ import {
   CorsBuilder,
   Get,
   Post,
-  QueryParam,
+  Req,
 } from "https://deno.land/x/alosaur@v0.33.0/mod.ts";
 
 const KV = await Deno.openKv();
 const STRING_BODY_TRANSFORMER = async (body: ReadableStream) =>
   await new Response(body).text();
+const DB_CONTROLLER_PATH = "/db";
 
-@Controller("")
-export class HomeController {
-  @Get()
-  getValue(@QueryParam("key") key: string) {
-    if (!key) {
-      return;
-    }
-    const keyArray = key.split(".");
-    return KV.get(keyArray);
+@Controller(DB_CONTROLLER_PATH)
+export class DBController {
+  @Get(/.*/)
+  async getValue(@Req() request: Request) {
+    const path = new URL(request.url).pathname.slice(
+      `${DB_CONTROLLER_PATH}/`.length,
+    );
+    if (!path) return;
+    const keyArray = path.split("/");
+    return (await KV.get(keyArray)).value;
   }
 
-  @Post()
-  setValue(
-    @QueryParam("key") key: string,
+  @Post(/.*/)
+  async setValue(
+    @Req() request: Request,
     @Body(STRING_BODY_TRANSFORMER) value: string,
   ) {
-    if (!key) {
-      return;
-    }
-    const keyArray = key.split(".");
-    return KV.set(keyArray, value);
+    const path = new URL(request.url).pathname.slice(
+      `${DB_CONTROLLER_PATH}/`.length,
+    );
+    if (!path) return;
+    const keyArray = path.split("/");
+    return await KV.set(keyArray, value);
   }
 }
 
 // Declare module
 @Area({
-  controllers: [HomeController],
+  controllers: [DBController],
 })
 export class HomeArea {}
 
