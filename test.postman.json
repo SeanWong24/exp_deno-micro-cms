@@ -1,76 +1,76 @@
 {
-    "info": {
-        "_postman_id": "c7cff2cb-b71f-4834-b970-efa6b9cd4908",
-        "name": "test",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        "description": ""
-    },
-    "item": [
-        {
-            "name": "Get a value",
-            "request": {
-                "method": "GET",
-                "url": {
-                    "raw": "http://localhost:8000/db/test/something",
-                    "path": [
-                        "db",
-                        "test",
-                        "something"
-                    ],
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8000"
-                }
-            }
-        },
-        {
-            "name": "Delete a value",
-            "request": {
-                "method": "DELETE",
-                "url": {
-                    "raw": "http://localhost:8000/db/test/something",
-                    "path": [
-                        "db",
-                        "test",
-                        "something"
-                    ],
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8000"
-                }
-            }
-        },
-        {
-            "name": "Set a value",
-            "request": {
-                "method": "POST",
-                "url": {
-                    "raw": "http://localhost:8000/db/test/something",
-                    "path": [
-                        "db",
-                        "test",
-                        "something"
-                    ],
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8000"
-                },
-                "body": {
-                    "mode": "raw",
-                    "options": {
-                        "raw": {
-                            "language": "text"
-                        }
-                    },
-                    "raw": "Something..."
-                }
-            }
+  "info": {
+    "_postman_id": "c7cff2cb-b71f-4834-b970-efa6b9cd4908",
+    "name": "test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": ""
+  },
+  "item": [
+    {
+      "name": "Get a value",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8000/db/test/something",
+          "path": [
+            "db",
+            "test",
+            "something"
+          ],
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000"
         }
-    ]
+      }
+    },
+    {
+      "name": "Delete a value",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:8000/db/test/something",
+          "path": [
+            "db",
+            "test",
+            "something"
+          ],
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000"
+        }
+      }
+    },
+    {
+      "name": "Set a value",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:8000/db/test/something",
+          "path": [
+            "db",
+            "test",
+            "something"
+          ],
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000"
+        },
+        "body": {
+          "mode": "raw",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          },
+          "raw": "Something..."
+        }
+      }
+    }
+  ]
 }
