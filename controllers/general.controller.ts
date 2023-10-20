@@ -10,7 +10,7 @@ import {
 } from "alosaur/mod.ts";
 import { checkIfKeyIsValid, DB, resolveKeyPath } from "../utils/db.ts";
 import { extractUrlPath } from "../utils/extract-url-path.ts";
-import { DBNamespaces } from "../utils/key-namespaces.ts";
+import { DBNamespaces } from "../utils/db-namespaces.ts";
 
 @Controller(GeneralController.BASE_PATH)
 export class GeneralController {
