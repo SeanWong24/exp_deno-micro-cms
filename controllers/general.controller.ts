@@ -1,4 +1,4 @@
-import { Status } from "https://deno.land/std@0.171.0/http/http_status.ts";
+import { Status } from "std/http/http_status.ts";
 import {
   Body,
   Controller,
