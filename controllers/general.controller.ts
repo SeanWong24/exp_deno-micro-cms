@@ -24,14 +24,14 @@ export class GeneralController {
       0,
       -"/$list".length,
     );
-    const key = resolveKeyPath(DBNamespaces.APP, path.split("/"));
+    const key = resolveKeyPath(DBNamespaces.APP_GENERAL, path.split("/"));
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
     const kvListIterator = DB.list({ prefix: key });
     const list = [];
     for await (const item of kvListIterator) {
-      list.push(item.key.slice(DBNamespaces.APP.length));
+      list.push(item.key.slice(DBNamespaces.APP_GENERAL.length));
     }
     return list;
   }
@@ -40,7 +40,7 @@ export class GeneralController {
   async getValue(@Req() request: Request) {
     const path = extractUrlPath(request.url, GeneralController.BASE_PATH);
     if (!path) return;
-    const key = resolveKeyPath(DBNamespaces.APP, path.split("/"));
+    const key = resolveKeyPath(DBNamespaces.APP_GENERAL, path.split("/"));
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
@@ -55,7 +55,7 @@ export class GeneralController {
   ) {
     const path = extractUrlPath(request.url, GeneralController.BASE_PATH);
     if (!path) return;
-    const key = resolveKeyPath(DBNamespaces.APP, path.split("/"));
+    const key = resolveKeyPath(DBNamespaces.APP_GENERAL, path.split("/"));
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
@@ -66,7 +66,7 @@ export class GeneralController {
   async deleteValue(@Req() request: Request) {
     const path = extractUrlPath(request.url, GeneralController.BASE_PATH);
     if (!path) return;
-    const key = resolveKeyPath(DBNamespaces.APP, path.split("/"));
+    const key = resolveKeyPath(DBNamespaces.APP_GENERAL, path.split("/"));
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
