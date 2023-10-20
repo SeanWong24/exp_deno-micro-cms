@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "alosaur/": "https://deno.land/x/alosaur@v0.38.0/"
+  },
+  "tasks": {
+    "dev": "deno run -A --unstable --watch app.ts",
+    "dev:debugger": "deno run -A --unstable --watch --inspect-wait app.ts",
+    "start": "deno run --allow-net --unstable --watch app.ts"
+  }
+}
