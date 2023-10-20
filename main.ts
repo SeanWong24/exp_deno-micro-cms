@@ -1,28 +1,21 @@
+/// <reference lib="deno.unstable" />
+
 import {
   App,
   Area,
-  Body,
-  CorsBuilder,
   Controller,
+  CorsBuilder,
   Get,
-  Post,
 } from "https://deno.land/x/alosaur@v0.33.0/mod.ts";
 
 const kv = await Deno.openKv();
-await kv.set(['main', 'test'], 'Hello World'!)
-
-function parse(markdown?: string) {
-  if (!markdown) {
-    return undefined;
-  }
-  return marked.parse(markdown);
-}
+await kv.set(["main", "test"], "Hello World!");
 
 @Controller()
 export class HomeController {
   @Get()
-  text() {
-    return kv.get(['main', 'test']);
+  async text() {
+    return (await kv.get(["main", "test"])).value;
   }
 }
 
