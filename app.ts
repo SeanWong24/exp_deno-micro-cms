@@ -1,10 +1,10 @@
 import { App, CorsBuilder } from "alosaur/mod.ts";
 
 import { HomeArea } from "./areas/home.area.ts";
-import { DBArea } from "./areas/db.area.ts";
+import { CoreArea } from "./areas/core.area.ts";
 
 const app = new App({
-  areas: [HomeArea, DBArea],
+  areas: [HomeArea, CoreArea],
   logging: false,
 });
 
