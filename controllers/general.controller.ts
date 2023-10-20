@@ -44,8 +44,7 @@ export class GeneralController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    return (await DB.get(key)).value ??
-      undefined;
+    return (await DB.get(key)).value ?? "";
   }
 
   @Post(/.*/)
@@ -70,6 +69,7 @@ export class GeneralController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    return await DB.delete(key);
+    await DB.delete(key);
+    return "";
   }
 }
