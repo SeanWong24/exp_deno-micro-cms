@@ -9,8 +9,8 @@ import {
   Post,
   QueryParam,
 } from "alosaur/mod.ts";
-import { checkIfKeyIsValid, DB, resolveKeyPath } from "../../../utils/db.ts";
-import { DBNamespaces } from "../../../utils/db-namespaces.ts";
+import { checkIfKeyIsValid, DB, resolveKeyPath } from "../utils/db.ts";
+import { DBNamespaces } from "../utils/db-namespaces.ts";
 
 @Controller("/general")
 export class GeneralController {
