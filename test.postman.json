@@ -1,76 +1,322 @@
 {
-  "info": {
-    "_postman_id": "c7cff2cb-b71f-4834-b970-efa6b9cd4908",
-    "name": "test",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": ""
-  },
-  "item": [
-    {
-      "name": "Get a value",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "http://localhost:8000/db/test/something",
-          "path": [
-            "db",
-            "test",
-            "something"
-          ],
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8000"
-        }
-      }
+    "info": {
+        "_postman_id": "4ec2ccbf-c062-4f56-a04f-d2b00bb7c8b8",
+        "name": "test",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
     },
-    {
-      "name": "Delete a value",
-      "request": {
-        "method": "DELETE",
-        "url": {
-          "raw": "http://localhost:8000/db/test/something",
-          "path": [
-            "db",
-            "test",
-            "something"
-          ],
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8000"
-        }
-      }
-    },
-    {
-      "name": "Set a value",
-      "request": {
-        "method": "POST",
-        "url": {
-          "raw": "http://localhost:8000/db/test/something",
-          "path": [
-            "db",
-            "test",
-            "something"
-          ],
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8000"
-        },
-        "body": {
-          "mode": "raw",
-          "options": {
-            "raw": {
-              "language": "text"
+    "item": [
+        {
+            "name": "Get general header",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/general/header",
+                    "path": [
+                        "api",
+                        "general",
+                        "header"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
             }
-          },
-          "raw": "Something..."
+        },
+        {
+            "name": "Delete general header",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:8000/api/general/header",
+                    "path": [
+                        "api",
+                        "general",
+                        "header"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Set general header",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/general/header",
+                    "path": [
+                        "api",
+                        "general",
+                        "header"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "\"Header\""
+                }
+            }
+        },
+        {
+            "name": "Get general list",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/general",
+                    "path": [
+                        "api",
+                        "general"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Get general list with detail",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/general?detail=1",
+                    "query": [
+                        {
+                            "key": "detail",
+                            "value": "1"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "api",
+                        "general"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Get document group",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/test",
+                    "path": [
+                        "api",
+                        "document",
+                        "test"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Set document group",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/test",
+                    "path": [
+                        "api",
+                        "document",
+                        "test"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"description\": \"It is awesome!\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Delete document group",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/test",
+                    "path": [
+                        "api",
+                        "document",
+                        "test"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Get document group list",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/document",
+                    "path": [
+                        "api",
+                        "document"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Create document item",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/test/new",
+                    "path": [
+                        "api",
+                        "document",
+                        "test",
+                        "new"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"title\": \"Test Article\",\n  \"subtitle\": \"Subtitle...\",\n  \"content\": \"Hello World!!!\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Get document item",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/test/:id",
+                    "query": [],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "01HD88TDM6TAS7AXKVDE1KMTMD"
+                        }
+                    ],
+                    "path": [
+                        "api",
+                        "document",
+                        "test",
+                        ":id"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Delete document item",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/test/:id",
+                    "query": [],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "01HD88TDM6TAS7AXKVDE1KMTMD"
+                        }
+                    ],
+                    "path": [
+                        "api",
+                        "document",
+                        "test",
+                        ":id"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Modify document item",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/test/:id",
+                    "query": [],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "01HD89A6KFWJ6VMJRFPJDV95JJ"
+                        }
+                    ],
+                    "path": [
+                        "api",
+                        "document",
+                        "test",
+                        ":id"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"title\": \"Modified Article\",\n  \"subtitle\": \"Modified Subtitle...\",\n  \"content\": \"Hello, World!!!\"\n}"
+                }
+            }
         }
-      }
-    }
-  ]
+    ]
 }
