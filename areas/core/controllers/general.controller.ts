@@ -8,17 +8,21 @@ import {
   Post,
   Req,
 } from "alosaur/mod.ts";
-import { checkIfKeyIsValid, DB, resolveKeyPath } from "../utils/db.ts";
-import { extractUrlPath } from "../utils/extract-url-path.ts";
-import { DBNamespaces } from "../utils/db-namespaces.ts";
+import { checkIfKeyIsValid, DB, resolveKeyPath } from "../../../utils/db.ts";
+import { extractUrlPath } from "../../../utils/extract-url-path.ts";
+import { DBNamespaces } from "../../../utils/db-namespaces.ts";
+import { AREA_BASE_ROUTE } from "../base-route.ts";
 
-@Controller(GeneralController.BASE_PATH)
+@Controller(GeneralController.BASE_ROUTE)
 export class GeneralController {
-  static readonly BASE_PATH = "/general";
+  static readonly BASE_ROUTE = "/general";
+  static get FULL_BASE_ROUTE() {
+    return `${AREA_BASE_ROUTE}${GeneralController.BASE_ROUTE}`;
+  }
 
   @Get(/.*\/\$list$/)
   async getList(@Req() request: Request) {
-    let path = extractUrlPath(request.url, GeneralController.BASE_PATH);
+    let path = extractUrlPath(request.url, GeneralController.FULL_BASE_ROUTE);
     if (!path) return;
     path = path.slice(
       0,
@@ -38,7 +42,7 @@ export class GeneralController {
 
   @Get(/.*/)
   async getValue(@Req() request: Request) {
-    const path = extractUrlPath(request.url, GeneralController.BASE_PATH);
+    const path = extractUrlPath(request.url, GeneralController.FULL_BASE_ROUTE);
     if (!path) return;
     const key = resolveKeyPath(DBNamespaces.APP_GENERAL, path.split("/"));
     if (!checkIfKeyIsValid(key)) {
@@ -52,7 +56,7 @@ export class GeneralController {
     @Req() request: Request,
     @Body() value: unknown,
   ) {
-    const path = extractUrlPath(request.url, GeneralController.BASE_PATH);
+    const path = extractUrlPath(request.url, GeneralController.FULL_BASE_ROUTE);
     if (!path) return;
     const key = resolveKeyPath(DBNamespaces.APP_GENERAL, path.split("/"));
     if (!checkIfKeyIsValid(key)) {
@@ -63,7 +67,7 @@ export class GeneralController {
 
   @Delete(/.*/)
   async deleteValue(@Req() request: Request) {
-    const path = extractUrlPath(request.url, GeneralController.BASE_PATH);
+    const path = extractUrlPath(request.url, GeneralController.FULL_BASE_ROUTE);
     if (!path) return;
     const key = resolveKeyPath(DBNamespaces.APP_GENERAL, path.split("/"));
     if (!checkIfKeyIsValid(key)) {
