@@ -5,7 +5,7 @@ import { CoreArea } from "./areas/core/core.area.ts";
 
 const app = new App({
   areas: [HomeArea, CoreArea],
-  logging: false,
+  logging: Deno.env.get("DEV") ? true : false,
 });
 
 app.useCors(

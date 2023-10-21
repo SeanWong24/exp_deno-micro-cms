@@ -4,8 +4,8 @@
     "std/": "https://deno.land/std@0.171.0/"
   },
   "tasks": {
-    "dev": "deno run -A --unstable --watch app.ts",
-    "dev:debugger": "deno run -A --unstable --watch --inspect-wait app.ts",
-    "start": "deno run --allow-net --unstable --watch app.ts"
+    "dev": "DEV=1 deno run -A --unstable --watch app.ts",
+    "dev:debugger": "DEV=1 deno run -A --unstable --watch --inspect-wait app.ts",
+    "start": "deno run --allow-net --allow-env --unstable --watch app.ts"
   }
 }
