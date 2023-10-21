@@ -148,6 +148,7 @@
     "https://deno.land/x/alosaur@v0.38.0/src/utils/register-providers.ts": "26bd262fe62e28a56b47769ff627020bd3887a9b6669dc6e3a5506c4443c6fae",
     "https://deno.land/x/alosaur@v0.38.0/src/version.ts": "ee7a06a56104cba11a268257975c27fd006acae4b6f4d5d6c40bcc6ef997c80e",
     "https://deno.land/x/media_types@v2.11.1/db.ts": "1eac2b1b57195e41d7e40d7b236a3adeb93b4fa18084b4c9db49144fe685c78d",
-    "https://deno.land/x/media_types@v2.11.1/mod.ts": "1be09ec3626332f9fe52a8a9ede852bb76d2207f84bec1f1b16c10555478008f"
+    "https://deno.land/x/media_types@v2.11.1/mod.ts": "1be09ec3626332f9fe52a8a9ede852bb76d2207f84bec1f1b16c10555478008f",
+    "https://deno.land/x/ulid@v0.3.0/mod.ts": "f7ff065b66abd485051fc68af23becef6ccc7e81f7774d7fcfd894a4b2da1984"
   }
 }

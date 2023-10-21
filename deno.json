@@ -1,7 +1,8 @@
 {
   "imports": {
     "alosaur/": "https://deno.land/x/alosaur@v0.38.0/",
-    "std/": "https://deno.land/std@0.171.0/"
+    "std/": "https://deno.land/std@0.171.0/",
+    "ulid": "https://deno.land/x/ulid@v0.3.0/mod.ts"
   },
   "tasks": {
     "dev": "DEV=1 deno run -A --unstable --watch app.ts",
