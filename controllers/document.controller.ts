@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   QueryParam,
+  UseHook,
 } from "alosaur/mod.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import {
@@ -17,6 +18,7 @@ import {
 } from "../utils/db.ts";
 import { Status } from "std/http/http_status.ts";
 import { ulid } from "ulid";
+import { AuthHook } from "../utils/auth.hook.ts";
 
 type DocumentItem = {
   title: string;
@@ -86,6 +88,7 @@ export class DocumentController {
     return { id, metadata, items };
   }
 
+  @UseHook(AuthHook)
   @Post("/:group")
   async setGroup(
     @Param("group") id: string,
@@ -129,6 +132,7 @@ export class DocumentController {
     return await DB.set(key, metadata);
   }
 
+  @UseHook(AuthHook)
   @Delete("/:group")
   async deleteGroup(@Param("group") id: string) {
     const key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
@@ -173,6 +177,7 @@ export class DocumentController {
       "";
   }
 
+  @UseHook(AuthHook)
   @Post("/:group/:item")
   async setItem(
     @Param("group") groupId: string,
@@ -204,6 +209,7 @@ export class DocumentController {
     );
   }
 
+  @UseHook(AuthHook)
   @Delete("/:group/:item")
   async deleteItem(
     @Param("group") groupId: string,

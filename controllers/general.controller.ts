@@ -8,9 +8,11 @@ import {
   Param,
   Post,
   QueryParam,
+  UseHook,
 } from "alosaur/mod.ts";
 import { checkIfKeyIsValid, DB, resolveKeyPath } from "../utils/db.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
+import { AuthHook } from "../utils/auth.hook.ts";
 
 @Controller("/general")
 export class GeneralController {
@@ -41,6 +43,7 @@ export class GeneralController {
     return (await DB.get(key)).value ?? "";
   }
 
+  @UseHook(AuthHook)
   @Post("/:id")
   async setValue(
     @Param("id") id: string,
@@ -53,6 +56,7 @@ export class GeneralController {
     return await DB.set(key, value);
   }
 
+  @UseHook(AuthHook)
   @Delete("/:id")
   async deleteValue(@Param("id") id: string) {
     const key = resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);

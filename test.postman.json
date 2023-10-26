@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "4ec2ccbf-c062-4f56-a04f-d2b00bb7c8b8",
+        "_postman_id": "c54ca231-a71a-47e6-a9cb-51800fe73433",
         "name": "test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
@@ -315,6 +315,51 @@
                         }
                     },
                     "raw": "{\n  \"title\": \"Modified Article\",\n  \"subtitle\": \"Modified Subtitle...\",\n  \"content\": \"Hello, World!!!\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Sign in",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/auth/sign-in?passcode=test",
+                    "query": [
+                        {
+                            "key": "passcode",
+                            "value": "test"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "api",
+                        "auth",
+                        "sign-in"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Sign out",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/auth/sign-out",
+                    "path": [
+                        "api",
+                        "auth",
+                        "sign-out"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
                 }
             }
         }
