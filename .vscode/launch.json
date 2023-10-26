@@ -14,9 +14,6 @@
         "task",
         "dev:debugger"
       ],
-      "env": {
-        "PASSCODE": "test"
-      },
       "attachSimplePort": 9229
     }
   ]
