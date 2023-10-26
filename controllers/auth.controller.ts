@@ -1,9 +1,24 @@
-import { Controller, HttpError, Post, QueryParam, Res } from "alosaur/mod.ts";
+import {
+  Controller,
+  Get,
+  HttpError,
+  Post,
+  QueryParam,
+  Res,
+  UseHook,
+} from "alosaur/mod.ts";
 import { Status } from "std/http/http_status.ts";
 import { deleteCookie, setCookie } from "std/http/cookie.ts";
+import { AuthHook } from "../utils/auth.hook.ts";
 
 @Controller("/auth")
 export class AuthController {
+  @UseHook(AuthHook)
+  @Get()
+  check() {
+    return "";
+  }
+
   @Post("/sign-in")
   signIn(@QueryParam("passcode") passcode: string, @Res() response: Response) {
     const truthPasscode = Deno.env.get("PASSCODE");
