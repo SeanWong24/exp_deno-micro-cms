@@ -25,12 +25,12 @@ export async function startApp(appConfig?: AppConfig) {
     );
   }
 
-  const indexPath = APP_CONFIG.INDEX_PATH || "index.html";
+  const indexPath = APP_CONFIG.FE_INDEX_PATH || "index.html";
   const wwwConfig = {
-    root: `${Deno.cwd()}/www`,
+    root: APP_CONFIG.FE_ROOT_PATH ?? `${Deno.cwd()}/www`,
     index: indexPath,
   };
-  if (APP_CONFIG.USE_SPA) {
+  if (APP_CONFIG.FE_USE_SPA) {
     app.use(
       /^\//,
       new SpaBuilder(wwwConfig),
