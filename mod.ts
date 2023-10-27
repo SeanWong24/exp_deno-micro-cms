@@ -26,42 +26,25 @@ export async function startApp(appConfig?: AppConfig) {
     );
   }
 
-  const wwwIndexPath = APP_CONFIG.FE_INDEX_PATH || "index.html";
+  const wwwIndexPath = APP_CONFIG.FE_INDEX_PATH;
   const wwwConfig = {
-    root: APP_CONFIG.FE_ROOT_PATH ?? `${Deno.cwd()}/www`,
+    root: APP_CONFIG.FE_ROOT_PATH,
     index: wwwIndexPath,
   };
-  if (APP_CONFIG.FE_USE_SPA) {
-    app.use(
-      /^\//,
-      new SpaBuilder(wwwConfig),
-    );
-  } else {
-    app.useStatic(wwwConfig);
-  }
+  app.use(
+    /^\//,
+    new SpaBuilder(wwwConfig),
+  );
 
-  const adminUIIndexPath = APP_CONFIG.ADMIN_INDEX_PATH || "index.html";
+  const adminUIIndexPath = APP_CONFIG.ADMIN_INDEX_PATH;
   const adminUIConfig = {
-    root: APP_CONFIG.ADMIN_ROOT_PATH ?? `${Deno.cwd()}/www_admin`,
+    root: APP_CONFIG.ADMIN_ROOT_PATH ,
     index: adminUIIndexPath,
     baseRoute: "/admin/",
   };
-  if (APP_CONFIG.ADMIN_USE_SPA) {
-    app.use(
-      /^\//,
-      new SpaBuilder(adminUIConfig),
-    );
-  } else {
-    app.useStatic(adminUIConfig);
-  }
-
   app.use(
-    /^\/admin\//,
-    new SpaBuilder({
-      root: `${Deno.cwd()}/admin-ui`,
-      index: "index.html",
-      baseRoute: "/admin/",
-    }),
+    /^\/admin/,
+    new SpaBuilder(adminUIConfig),
   );
 
   app.listen();
