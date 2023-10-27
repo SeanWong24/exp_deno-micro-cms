@@ -15,20 +15,18 @@ app.useCors(
     .AllowAnyHeader(),
 );
 
-const spaIndexPath = Deno.env.get("SPA_INDEX_PATH");
-if (spaIndexPath) {
+const indexPath = Deno.env.get("INDEX_PATH") || "index.html";
+const wwwConfig = {
+  root: `${Deno.cwd()}/www`,
+  index: indexPath,
+};
+if (Deno.env.get("USE_SPA")) {
   app.use(
     /^\//,
-    new SpaBuilder({
-      root: `${Deno.cwd()}/www`,
-      index: spaIndexPath,
-    }),
+    new SpaBuilder(wwwConfig),
   );
 } else {
-  app.useStatic({
-    root: `${Deno.cwd()}/www`,
-    index: "index.html",
-  });
+  app.useStatic(wwwConfig);
 }
 
 app.use(

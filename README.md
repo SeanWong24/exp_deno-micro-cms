@@ -13,6 +13,5 @@ deno task dev
 ## Environment variables
 
 - `PASSCODE` - The admin passcode (required by modifing entites).
-- `SPA_INDEX_PATH` - A path relative to `/www`. If set, the `/www` directory
-  would be hosted as a SPA with the specified index path; otherwise, the `/www`
-  directory would be hosted normally.
+- `USE_SPA` - If set `true`, the `/www` directory would be hosted as a SPA.
+- `INDEX_PATH` - A path relative to `/www` to specify the index html file.
