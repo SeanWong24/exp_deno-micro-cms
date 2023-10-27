@@ -15,3 +15,4 @@ deno task dev
 - `PASSCODE` - The admin passcode (required by modifing entites).
 - `USE_SPA` - If set `true`, the `/www` directory would be hosted as a SPA.
 - `INDEX_PATH` - A path relative to `/www` to specify the index html file.
+- `DB_PATH` - If specified, the DB would be direct to this path.

@@ -1,6 +1,6 @@
 /// <reference lib="deno.unstable" />
 
-export const DB = await Deno.openKv();
+export const DB = await Deno.openKv(Deno.env.get("DB_PATH"));
 
 export function resolveKeyPath(base: string[], unresolved: string[]) {
   return base.concat(unresolved).filter(Boolean);
