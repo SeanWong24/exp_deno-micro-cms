@@ -8,12 +8,14 @@ const app = new App({
   logging: Deno.env.get("DEV") ? true : false,
 });
 
-app.useCors(
-  new CorsBuilder()
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader(),
-);
+if (Deno.env.get("DEV")) {
+  app.useCors(
+    new CorsBuilder()
+      .AllowAnyOrigin()
+      .AllowAnyMethod()
+      .AllowAnyHeader(),
+  );
+}
 
 const indexPath = Deno.env.get("INDEX_PATH") || "index.html";
 const wwwConfig = {
