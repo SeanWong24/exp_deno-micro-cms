@@ -96,9 +96,12 @@ export class AppRoot extends LitElement {
             if (!(await this.#checkAuthenticationStatus())) {
               await this.#authenticate();
             }
+            const value = await fetch(`/api/general/${key}`).then(
+              (response) => response.text(),
+            );
             await fetch(`/api/general/${key}`, {
               method: "POST",
-              body: prompt("Enter the value (as JSON)", ""),
+              body: prompt("Enter the value (as JSON)", value) ?? value,
               headers: {
                 "Content-Type": "application/json",
               },
@@ -179,9 +182,15 @@ export class AppRoot extends LitElement {
                 </button>
                 <button
                   @click=${async () => {
+            if (!(await this.#checkAuthenticationStatus())) {
+              await this.#authenticate();
+            }
+            const { metadata } = await fetch(
+              `/api/document/${group.id}`,
+            ).then((response) => response.json());
             await fetch(`/api/document/${group.id}`, {
               method: "POST",
-              body: prompt("Enter the metadata (as JSON)", ""),
+              body: prompt("Enter the metadata (as JSON)", metadata) ?? metadata,
               headers: {
                 "Content-Type": "application/json",
               },
@@ -194,6 +203,9 @@ export class AppRoot extends LitElement {
                 </button>
                 <button
                   @click=${async () => {
+            if (!(await this.#checkAuthenticationStatus())) {
+              await this.#authenticate();
+            }
             await fetch(
               `/api/document/${group.id}?rename=${
                 prompt("Enter a new group name", group.id) || group.id
@@ -207,6 +219,9 @@ export class AppRoot extends LitElement {
                 </button>
                 <button
                   @click=${async () => {
+            if (!(await this.#checkAuthenticationStatus())) {
+              await this.#authenticate();
+            }
             await fetch(`/api/document/${group.id}`, {
               method: "DELETE",
               credentials: "include",
@@ -283,6 +298,9 @@ export class AppRoot extends LitElement {
                       </button>
                       <button
                         @click=${async () => {
+                if (!(await this.#checkAuthenticationStatus())) {
+                  await this.#authenticate();
+                }
                 await fetch(
                   `/api/document/${item.groupId}/${item.id}`,
                   {
@@ -308,6 +326,9 @@ export class AppRoot extends LitElement {
                       </button>
                       <button
                         @click=${async () => {
+                if (!(await this.#checkAuthenticationStatus())) {
+                  await this.#authenticate();
+                }
                 await fetch(
                   `/api/document/${item.groupId}/${item.id}`,
                   {
@@ -333,6 +354,9 @@ export class AppRoot extends LitElement {
                       </button>
                       <button
                         @click=${async () => {
+                if (!(await this.#checkAuthenticationStatus())) {
+                  await this.#authenticate();
+                }
                 const itemWithContent = await fetch(
                   `/api/document/${item.groupId}/${item.id}`,
                 ).then((response) => response.json());
@@ -361,6 +385,9 @@ export class AppRoot extends LitElement {
                       </button>
                       <button
                         @click=${async () => {
+                if (!(await this.#checkAuthenticationStatus())) {
+                  await this.#authenticate();
+                }
                 await fetch(
                   `/api/document/${item.groupId}/${item.id}`,
                   { method: "DELETE", credentials: "include" },
