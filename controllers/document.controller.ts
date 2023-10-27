@@ -76,6 +76,7 @@ export class DocumentController {
       const value = item.value as DocumentItemWithTimestamps;
       items.push({
         id: item.key.at(itemKeyPrefix.length),
+        groupId: id,
         title: value.title,
         subtitle: value.subtitle,
         timeCreated: value.timeCreated,
@@ -176,7 +177,7 @@ export class DocumentController {
     if (!item) {
       return "";
     }
-    return { id: itemId, ...item } ??
+    return { id: itemId, groupId, ...item } ??
       "";
   }
 
