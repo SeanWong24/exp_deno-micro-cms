@@ -10,7 +10,7 @@ export async function startApp(appConfig?: AppConfig) {
   }
 
   const db = await initializeDB();
-  appConfig?.DB_INIT?.(db);
+  await appConfig?.DB_INIT?.(db);
 
   const app = new App({
     areas: [HomeArea, CoreArea],
