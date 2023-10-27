@@ -1,4 +1,4 @@
-import { App, CorsBuilder, SpaBuilder } from "alosaur/mod.ts";
+import { App, CorsBuilder, SpaBuilder } from "./deps/alosaur.ts";
 import { HomeArea } from "./areas/home.area.ts";
 import { CoreArea } from "./areas/core.area.ts";
 import { APP_CONFIG, AppConfig } from "./utils/app-config.ts";

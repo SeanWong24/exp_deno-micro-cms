@@ -1,4 +1,10 @@
-import { Content, Controller, Get, QueryParam, Redirect } from "alosaur/mod.ts";
+import {
+  Content,
+  Controller,
+  Get,
+  QueryParam,
+  Redirect,
+} from "../deps/alosaur.ts";
 
 @Controller()
 export class HomeController {

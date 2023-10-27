@@ -6,9 +6,8 @@ import {
   QueryParam,
   Res,
   UseHook,
-} from "alosaur/mod.ts";
-import { Status } from "std/http/http_status.ts";
-import { deleteCookie, setCookie } from "std/http/cookie.ts";
+} from "../deps/alosaur.ts";
+import { deleteCookie, setCookie, Status } from "../deps/std/http.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
 
 @Controller("/auth")

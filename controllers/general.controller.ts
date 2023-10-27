@@ -1,4 +1,4 @@
-import { Status } from "std/http/http_status.ts";
+import { Status } from "../deps/std/http.ts";
 import {
   Body,
   Controller,
@@ -9,7 +9,7 @@ import {
   Post,
   QueryParam,
   UseHook,
-} from "alosaur/mod.ts";
+} from "../deps/alosaur.ts";
 import { checkIfKeyIsValid, DB, resolveKeyPath } from "../utils/db.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import { AuthHook } from "../utils/auth.hook.ts";

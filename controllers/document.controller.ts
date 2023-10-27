@@ -8,7 +8,7 @@ import {
   Post,
   QueryParam,
   UseHook,
-} from "alosaur/mod.ts";
+} from "../deps/alosaur.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import {
   checkIfKeyIsValid,
@@ -16,8 +16,8 @@ import {
   DB,
   resolveKeyPath,
 } from "../utils/db.ts";
-import { Status } from "std/http/http_status.ts";
-import { ulid } from "ulid";
+import { Status } from "../deps/std/http.ts";
+import { ulid } from "../deps/ulid.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
 
 type DocumentItem = {

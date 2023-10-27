@@ -1,4 +1,4 @@
-import { Area } from "alosaur/mod.ts";
+import { Area } from "../deps/alosaur.ts";
 import { HomeController } from "../controllers/home.controller.ts";
 
 @Area({

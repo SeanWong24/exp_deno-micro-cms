@@ -1,6 +1,5 @@
-import { HookTarget, HttpContext, HttpError } from "alosaur/mod.ts";
-import { Status } from "std/http/http_status.ts";
-import { getCookies } from "std/http/cookie.ts";
+import { HookTarget, HttpContext, HttpError } from "../deps/alosaur.ts";
+import { getCookies, Status } from "../deps/std/http.ts";
 
 export class AuthHook implements HookTarget<unknown, unknown> {
   /**
