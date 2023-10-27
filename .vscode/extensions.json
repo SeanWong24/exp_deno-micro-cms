@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "denoland.vscode-deno",
+        "eamodio.gitlens",
+        "rangav.vscode-thunder-client",
+        "runem.lit-plugin"
+    ]
+}
