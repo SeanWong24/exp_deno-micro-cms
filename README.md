@@ -1,13 +1,18 @@
-# Name
+# Deno Micro CMS
 
-This boilerplate contains Default implementation of Alosaur web framework.
+The minimal implementation of a CMS.
 
-### Scripts
+## Scripts
 
-Run server
+### Run server
 
 ```
 deno task dev
 ```
 
-That's it!
+## Environment variables
+
+- `PASSCODE` - The admin passcode (required by modifing entites).
+- `SPA_INDEX_PATH` - A path relative to `/www`. If set, the `/www` directory
+  would be hosted as a SPA with the specified index path; otherwise, the `/www`
+  directory would be hosted normally.
