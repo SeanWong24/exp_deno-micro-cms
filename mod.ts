@@ -4,7 +4,7 @@ import { CoreArea } from "./areas/core.area.ts";
 import { APP_CONFIG, AppConfig } from "./utils/app-config.ts";
 import { initializeDB } from "./utils/db.ts";
 
-export async function startApp(appConfig?: AppConfig) {
+export async function startApp(appConfig?: Partial<AppConfig>) {
   if (appConfig) {
     Object.assign(APP_CONFIG, appConfig);
   }
@@ -38,7 +38,7 @@ export async function startApp(appConfig?: AppConfig) {
 
   const adminUIIndexPath = APP_CONFIG.ADMIN_INDEX_PATH;
   const adminUIConfig = {
-    root: APP_CONFIG.ADMIN_ROOT_PATH ,
+    root: APP_CONFIG.ADMIN_ROOT_PATH,
     index: adminUIIndexPath,
     baseRoute: "/admin/",
   };
