@@ -19,4 +19,10 @@ deno task dev
   a SPA.
 - `FE_INDEX_PATH` - A path relative to front-end root directory to specify the
   index html file.
+- `ADMIN_ROOT_PATH` - The admin UI root directory. Default to
+  `<working_directory>/www_admin`.
+- `ADMIN_USE_SPA` - If set `true`, the admin UI root directory would be hosted
+  as a SPA.
+- `ADMIN_INDEX_PATH` - A path relative to admin UI root directory to specify the
+  index html file.
 - `DB_PATH` - If specified, the DB would be direct to this path.
