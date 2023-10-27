@@ -103,9 +103,12 @@ export class DocumentController {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
     if (checkIfKeyPartIsValid(rename)) {
-      metadata ??= await DB.get(key);
+      metadata ??= (await DB.get(key))?.value;
       await DB.delete(key);
-      key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [rename]);
+      key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+        DocumentController.GROUPS_PREFIX,
+        rename,
+      ]);
       const oldItemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
         "item",
         id,
