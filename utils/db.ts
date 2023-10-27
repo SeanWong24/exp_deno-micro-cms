@@ -2,10 +2,11 @@
 
 import { APP_CONFIG } from "./app-config.ts";
 
-export let DB: Deno.Kv;
+export let db: Deno.Kv;
 
 export async function initializeDB() {
-  DB = await Deno.openKv(APP_CONFIG.DB_PATH);
+  db = await Deno.openKv(APP_CONFIG.DB_PATH);
+  return db;
 }
 
 export function resolveKeyPath(base: string[], unresolved: string[]) {

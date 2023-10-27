@@ -10,7 +10,7 @@ import {
   QueryParam,
   UseHook,
 } from "../deps/alosaur.ts";
-import { checkIfKeyIsValid, DB, resolveKeyPath } from "../utils/db.ts";
+import { checkIfKeyIsValid, db, resolveKeyPath } from "../utils/db.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
 
@@ -22,7 +22,7 @@ export class GeneralController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    const kvListIterator = DB.list({ prefix: key });
+    const kvListIterator = db.list({ prefix: key });
     const list = [];
     for await (const item of kvListIterator) {
       list.push(
@@ -40,7 +40,7 @@ export class GeneralController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    return (await DB.get(key)).value ?? "";
+    return (await db.get(key)).value ?? "";
   }
 
   @UseHook(AuthHook)
@@ -53,7 +53,7 @@ export class GeneralController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    return await DB.set(key, value);
+    return await db.set(key, value);
   }
 
   @UseHook(AuthHook)
@@ -63,7 +63,7 @@ export class GeneralController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    await DB.delete(key);
+    await db.delete(key);
     return "";
   }
 }

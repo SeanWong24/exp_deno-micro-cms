@@ -13,7 +13,7 @@ import { DBNamespaces } from "../utils/db-namespaces.ts";
 import {
   checkIfKeyIsValid,
   checkIfKeyPartIsValid,
-  DB,
+  db,
   resolveKeyPath,
 } from "../utils/db.ts";
 import { Status } from "../deps/std/http.ts";
@@ -45,7 +45,7 @@ export class DocumentController {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
     const groups = [];
-    for await (const group of DB.list({ prefix: key })) {
+    for await (const group of db.list({ prefix: key })) {
       groups.push({
         id: group.key.at(key.length),
         metadata: group.value,
@@ -63,7 +63,7 @@ export class DocumentController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    const metadata = (await DB.get(key)).value;
+    const metadata = (await db.get(key)).value;
     const items = [];
     const itemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.ITEMS_PREFIX,
@@ -72,7 +72,7 @@ export class DocumentController {
     if (!checkIfKeyIsValid(itemKeyPrefix)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    for await (const item of DB.list({ prefix: itemKeyPrefix })) {
+    for await (const item of db.list({ prefix: itemKeyPrefix })) {
       const value = item.value as DocumentItemWithTimestamps;
       items.push({
         id: item.key.at(itemKeyPrefix.length),
@@ -104,8 +104,8 @@ export class DocumentController {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
     if (checkIfKeyPartIsValid(rename)) {
-      metadata ??= (await DB.get(key))?.value;
-      await DB.delete(key);
+      metadata ??= (await db.get(key))?.value;
+      await db.delete(key);
       key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
         DocumentController.GROUPS_PREFIX,
         rename,
@@ -124,16 +124,16 @@ export class DocumentController {
       if (!checkIfKeyIsValid(itemKeyPrefix)) {
         throw new HttpError(Status.InternalServerError, "Invalid key.");
       }
-      for await (const item of DB.list({ prefix: oldItemKeyPrefix })) {
+      for await (const item of db.list({ prefix: oldItemKeyPrefix })) {
         const itemKey = [
           ...itemKeyPrefix,
           ...item.key.slice(oldItemKeyPrefix.length),
         ];
-        await DB.set(itemKey, await DB.get(item.key));
-        await DB.delete(item.key);
+        await db.set(itemKey, await db.get(item.key));
+        await db.delete(item.key);
       }
     }
-    return await DB.set(key, metadata);
+    return await db.set(key, metadata);
   }
 
   @UseHook(AuthHook)
@@ -153,10 +153,10 @@ export class DocumentController {
     if (!checkIfKeyIsValid(itemKeyPrefix)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    for await (const item of DB.list({ prefix: itemKeyPrefix })) {
-      await DB.delete(item.key);
+    for await (const item of db.list({ prefix: itemKeyPrefix })) {
+      await db.delete(item.key);
     }
-    await DB.delete(key);
+    await db.delete(key);
     return "";
   }
 
@@ -173,7 +173,7 @@ export class DocumentController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    const item = (await DB.get(key)).value as DocumentItem | null;
+    const item = (await db.get(key)).value as DocumentItem | null;
     if (!item) {
       return "";
     }
@@ -201,9 +201,9 @@ export class DocumentController {
     }
     const now = new Date();
     const timeCreated =
-      ((await DB.get(key)).value as DocumentItemWithTimestamps | null)
+      ((await db.get(key)).value as DocumentItemWithTimestamps | null)
         ?.timeCreated ?? now;
-    return await DB.set(
+    return await db.set(
       key,
       {
         ...documentItem,
@@ -227,7 +227,7 @@ export class DocumentController {
     if (!checkIfKeyIsValid(key)) {
       throw new HttpError(Status.InternalServerError, "Invalid key.");
     }
-    await DB.delete(key);
+    await db.delete(key);
     return "";
   }
 }

@@ -9,7 +9,8 @@ export async function startApp(appConfig?: AppConfig) {
     Object.assign(APP_CONFIG, appConfig);
   }
 
-  await initializeDB();
+  const db = await initializeDB();
+  appConfig?.DB_INIT?.(db);
 
   const app = new App({
     areas: [HomeArea, CoreArea],

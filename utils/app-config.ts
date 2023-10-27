@@ -7,6 +7,7 @@ export type AppConfig = {
   ADMIN_USE_SPA?: string;
   ADMIN_INDEX_PATH?: string;
   DB_PATH?: string;
+  DB_INIT?: (db: Deno.Kv) => void;
 };
 
 export const APP_CONFIG: AppConfig = {
