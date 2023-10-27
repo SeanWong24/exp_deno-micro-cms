@@ -15,6 +15,21 @@ app.useCors(
     .AllowAnyHeader(),
 );
 
+if (Deno.env.get("USE_SPA")) {
+  app.use(
+    /^\//,
+    new SpaBuilder({
+      root: `${Deno.cwd()}/www`,
+      index: "index.html",
+    }),
+  );
+} else {
+  app.useStatic({
+    root: `${Deno.cwd()}/www`,
+    index: "index.html",
+  });
+}
+
 app.use(
   /^\/admin\//,
   new SpaBuilder({
