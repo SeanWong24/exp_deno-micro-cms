@@ -9,7 +9,7 @@ export class AuthHook implements HookTarget<unknown, unknown> {
     const headers = context.request.headers;
     const cookies = getCookies(headers);
     if (!cookies["authenticated"]) {
-      throw new HttpError(Status.Forbidden);
+      throw new HttpError(Status.Forbidden, "Not authenticated.");
     }
   }
 

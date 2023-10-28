@@ -3,22 +3,16 @@ import {
   Controller,
   Delete,
   Get,
-  HttpError,
   Param,
   Post,
   QueryParam,
   UseHook,
 } from "../deps/alosaur.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
-import {
-  checkIfKeyIsValid,
-  checkIfKeyPartIsValid,
-  db,
-  resolveKeyPath,
-} from "../utils/db.ts";
-import { Status } from "../deps/std/http.ts";
+import { checkIfKeyPartIsValid, db, resolveKeyPath } from "../utils/db.ts";
 import { ulid } from "../deps/ulid.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
+import { CatchErrors } from "../utils/catch-errors.hook.ts";
 
 type DocumentItem = {
   title: string;
@@ -31,6 +25,7 @@ type DocumentItemWithTimestamps = DocumentItem & {
   timeModified: Date;
 };
 
+@UseHook(CatchErrors)
 @Controller("/document")
 export class DocumentController {
   static readonly GROUPS_PREFIX = "groups";
@@ -41,9 +36,6 @@ export class DocumentController {
     const key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.GROUPS_PREFIX,
     ]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     const groups = [];
     for await (const group of db.list({ prefix: key })) {
       groups.push({
@@ -60,18 +52,12 @@ export class DocumentController {
       DocumentController.GROUPS_PREFIX,
       id,
     ]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     const metadata = (await db.get(key)).value;
     const items = [];
     const itemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.ITEMS_PREFIX,
       id,
     ]);
-    if (!checkIfKeyIsValid(itemKeyPrefix)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     for await (const item of db.list({ prefix: itemKeyPrefix })) {
       const value = item.value as DocumentItemWithTimestamps;
       items.push({
@@ -100,9 +86,6 @@ export class DocumentController {
       DocumentController.GROUPS_PREFIX,
       id,
     ]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     if (checkIfKeyPartIsValid(rename)) {
       metadata ??= (await db.get(key))?.value;
       await db.delete(key);
@@ -114,16 +97,10 @@ export class DocumentController {
         "item",
         id,
       ]);
-      if (!checkIfKeyIsValid(oldItemKeyPrefix)) {
-        throw new HttpError(Status.InternalServerError, "Invalid key.");
-      }
       const itemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
         "item",
         rename,
       ]);
-      if (!checkIfKeyIsValid(itemKeyPrefix)) {
-        throw new HttpError(Status.InternalServerError, "Invalid key.");
-      }
       for await (const item of db.list({ prefix: oldItemKeyPrefix })) {
         const itemKey = [
           ...itemKeyPrefix,
@@ -143,16 +120,10 @@ export class DocumentController {
       DocumentController.GROUPS_PREFIX,
       id,
     ]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     const itemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.ITEMS_PREFIX,
       id,
     ]);
-    if (!checkIfKeyIsValid(itemKeyPrefix)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     for await (const item of db.list({ prefix: itemKeyPrefix })) {
       await db.delete(item.key);
     }
@@ -170,9 +141,6 @@ export class DocumentController {
       groupId,
       itemId,
     ]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     const item = (await db.get(key)).value as DocumentItem | null;
     if (!item) {
       return "";
@@ -196,9 +164,6 @@ export class DocumentController {
       groupId,
       itemId,
     ]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     const now = new Date();
     const timeCreated =
       ((await db.get(key)).value as DocumentItemWithTimestamps | null)
@@ -224,9 +189,6 @@ export class DocumentController {
       groupId,
       itemId,
     ]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     await db.delete(key);
     return "";
   }

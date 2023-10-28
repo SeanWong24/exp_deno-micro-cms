@@ -1,27 +1,24 @@
-import { Status } from "../deps/std/http.ts";
 import {
   Body,
   Controller,
   Delete,
   Get,
-  HttpError,
   Param,
   Post,
   QueryParam,
   UseHook,
 } from "../deps/alosaur.ts";
-import { checkIfKeyIsValid, db, resolveKeyPath } from "../utils/db.ts";
+import { db, resolveKeyPath } from "../utils/db.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
+import { CatchErrors } from "../utils/catch-errors.hook.ts";
 
+@UseHook(CatchErrors)
 @Controller("/general")
 export class GeneralController {
   @Get()
   async getList(@QueryParam("detail") withDetail: boolean) {
     const key = resolveKeyPath(DBNamespaces.APP_GENERAL, []);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     const kvListIterator = db.list({ prefix: key });
     const list = [];
     for await (const item of kvListIterator) {
@@ -37,9 +34,6 @@ export class GeneralController {
   @Get("/:id")
   async getValue(@Param("id") id: string) {
     const key = resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     return (await db.get(key)).value ?? "";
   }
 
@@ -50,9 +44,6 @@ export class GeneralController {
     @Body() value: unknown,
   ) {
     const key = resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     return await db.set(key, value);
   }
 
@@ -60,9 +51,6 @@ export class GeneralController {
   @Delete("/:id")
   async deleteValue(@Param("id") id: string) {
     const key = resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
-    if (!checkIfKeyIsValid(key)) {
-      throw new HttpError(Status.InternalServerError, "Invalid key.");
-    }
     await db.delete(key);
     return "";
   }

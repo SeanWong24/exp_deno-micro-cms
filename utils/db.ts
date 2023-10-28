@@ -1,6 +1,7 @@
 /// <reference lib="deno.unstable" />
 
 import { APP_CONFIG } from "./app-config.ts";
+import { InvalidDBKeyError } from "./errors.ts";
 
 export let db: Deno.Kv;
 
@@ -10,7 +11,11 @@ export async function initializeDB() {
 }
 
 export function resolveKeyPath(base: string[], unresolved: string[]) {
-  return base.concat(unresolved).filter(Boolean);
+  const key = base.concat(unresolved).filter(Boolean);
+  if (!checkIfKeyIsValid(key)) {
+    throw new InvalidDBKeyError();
+  }
+  return key;
 }
 
 export function checkIfKeyIsValid(key: string[]) {
