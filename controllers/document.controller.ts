@@ -94,11 +94,11 @@ export class DocumentController {
         rename,
       ]);
       const oldItemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
-        "item",
+        DocumentController.ITEMS_PREFIX,
         id,
       ]);
       const itemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
-        "item",
+        DocumentController.ITEMS_PREFIX,
         rename,
       ]);
       for await (const item of db.list({ prefix: oldItemKeyPrefix })) {
