@@ -111,7 +111,7 @@ export class DocumentController {
         atomic.delete(item.key);
       }
     }
-    return await atomic.set(key, metadata).commit();
+    return await atomic.set(key, metadata ?? {}).commit();
   }
 
   @UseHook(AuthHook)
