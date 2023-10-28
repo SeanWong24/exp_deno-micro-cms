@@ -86,9 +86,10 @@ export class DocumentController {
       DocumentController.GROUPS_PREFIX,
       id,
     ]);
+    const atomic = db.atomic();
     if (checkIfKeyPartIsValid(rename)) {
       metadata ??= (await db.get(key))?.value;
-      await db.delete(key);
+      atomic.delete(key);
       key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
         DocumentController.GROUPS_PREFIX,
         rename,
@@ -106,11 +107,11 @@ export class DocumentController {
           ...itemKeyPrefix,
           ...item.key.slice(oldItemKeyPrefix.length),
         ];
-        await db.set(itemKey, await db.get(item.key));
-        await db.delete(item.key);
+        atomic.set(itemKey, (await db.get(item.key)).value);
+        atomic.delete(item.key);
       }
     }
-    return await db.set(key, metadata);
+    return await atomic.set(key, metadata).commit();
   }
 
   @UseHook(AuthHook)
@@ -124,10 +125,11 @@ export class DocumentController {
       DocumentController.ITEMS_PREFIX,
       id,
     ]);
+    const atomic = db.atomic();
     for await (const item of db.list({ prefix: itemKeyPrefix })) {
-      await db.delete(item.key);
+      atomic.delete(item.key);
     }
-    await db.delete(key);
+    await atomic.delete(key).commit();
     return "";
   }
 
