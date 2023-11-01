@@ -11,11 +11,11 @@ import {
   UseHook,
 } from "../deps/alosaur.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
-import { CatchErrors } from "../utils/catch-errors.hook.ts";
+import { CatchErrorsHook } from "../utils/catch-errors.hook.ts";
 import { GeneralInfoService } from "../services/general-info.service.ts";
 import { DBEntityNotExisted } from "../utils/errors.ts";
 
-@UseHook(CatchErrors)
+@UseHook(CatchErrorsHook)
 @Controller("/general")
 export class GeneralInfoController {
   constructor(private generalInfoService: GeneralInfoService) {}

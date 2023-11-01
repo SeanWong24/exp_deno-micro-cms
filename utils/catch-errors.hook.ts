@@ -8,7 +8,7 @@ import {
   InvalidDBKeyError,
 } from "./errors.ts";
 
-export class CatchErrors implements HookTarget<unknown, unknown> {
+export class CatchErrorsHook implements HookTarget<unknown, unknown> {
   /**
    *  this hook run before controller action
    */

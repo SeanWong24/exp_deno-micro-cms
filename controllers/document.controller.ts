@@ -11,7 +11,7 @@ import {
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import { ulid } from "../deps/ulid.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
-import { CatchErrors } from "../utils/catch-errors.hook.ts";
+import { CatchErrorsHook } from "../utils/catch-errors.hook.ts";
 import { DBServices } from "../services/db.service.ts";
 
 type DocumentItem = {
@@ -25,7 +25,7 @@ type DocumentItemWithTimestamps = DocumentItem & {
   timeModified: Date;
 };
 
-@UseHook(CatchErrors)
+@UseHook(CatchErrorsHook)
 @Controller("/document")
 export class DocumentController {
   static readonly GROUPS_PREFIX = "groups";
