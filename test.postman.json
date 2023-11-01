@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "25c536f6-33e6-4afe-a8bb-50172f16cf19",
+        "_postman_id": "21c3af63-f200-4e4f-9d29-6f43d3b88fb5",
         "name": "test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
@@ -126,11 +126,11 @@
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/test",
+                    "raw": "http://localhost:8000/api/document/foo-group",
                     "path": [
                         "api",
                         "document",
-                        "test"
+                        "foo-group"
                     ],
                     "protocol": "http",
                     "host": [
@@ -141,15 +141,15 @@
             }
         },
         {
-            "name": "Set document group",
+            "name": "Create a document group",
             "request": {
                 "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/test",
+                    "raw": "http://localhost:8000/api/document/foo-group",
                     "path": [
                         "api",
                         "document",
-                        "test"
+                        "foo-group"
                     ],
                     "protocol": "http",
                     "host": [
@@ -157,6 +157,12 @@
                     ],
                     "port": "8000"
                 },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
                 "body": {
                     "mode": "raw",
                     "options": {
@@ -173,11 +179,11 @@
             "request": {
                 "method": "DELETE",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/test",
+                    "raw": "http://localhost:8000/api/document/foo-group",
                     "path": [
                         "api",
                         "document",
-                        "test"
+                        "foo-group"
                     ],
                     "protocol": "http",
                     "host": [
@@ -206,16 +212,16 @@
             }
         },
         {
-            "name": "Create document item",
+            "name": "Create a document item",
             "request": {
                 "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/test/new",
+                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
                     "path": [
                         "api",
                         "document",
-                        "test",
-                        "new"
+                        "foo-group",
+                        "bar-item"
                     ],
                     "protocol": "http",
                     "host": [
@@ -223,6 +229,12 @@
                     ],
                     "port": "8000"
                 },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
                 "body": {
                     "mode": "raw",
                     "options": {
@@ -235,23 +247,16 @@
             }
         },
         {
-            "name": "Get document item",
+            "name": "Get a document item",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/test/:id",
-                    "query": [],
-                    "variable": [
-                        {
-                            "key": "id",
-                            "value": "01HD88TDM6TAS7AXKVDE1KMTMD"
-                        }
-                    ],
+                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
                     "path": [
                         "api",
                         "document",
-                        "test",
-                        ":id"
+                        "foo-group",
+                        "bar-item"
                     ],
                     "protocol": "http",
                     "host": [
@@ -266,61 +271,18 @@
             "request": {
                 "method": "DELETE",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/test/:id",
-                    "query": [],
-                    "variable": [
-                        {
-                            "key": "id",
-                            "value": "01HD88TDM6TAS7AXKVDE1KMTMD"
-                        }
-                    ],
+                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
                     "path": [
                         "api",
                         "document",
-                        "test",
-                        ":id"
+                        "foo-group",
+                        "bar-item"
                     ],
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
                     "port": "8000"
-                }
-            }
-        },
-        {
-            "name": "Modify document item",
-            "request": {
-                "method": "POST",
-                "url": {
-                    "raw": "http://localhost:8000/api/document/test/:id",
-                    "query": [],
-                    "variable": [
-                        {
-                            "key": "id",
-                            "value": "01HD89A6KFWJ6VMJRFPJDV95JJ"
-                        }
-                    ],
-                    "path": [
-                        "api",
-                        "document",
-                        "test",
-                        ":id"
-                    ],
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8000"
-                },
-                "body": {
-                    "mode": "raw",
-                    "options": {
-                        "raw": {
-                            "language": "json"
-                        }
-                    },
-                    "raw": "{\n  \"title\": \"Modified Article\",\n  \"subtitle\": \"Modified Subtitle...\",\n  \"content\": \"Hello, World!!!\"\n}"
                 }
             }
         },
@@ -434,6 +396,179 @@
                         }
                     },
                     "raw": "{\n  \"foo\": \"bar\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Update a document group",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/foo-group",
+                    "path": [
+                        "api",
+                        "document",
+                        "foo-group"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"foo\": \"bar\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Update part of a document group",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/foo-group",
+                    "path": [
+                        "api",
+                        "document",
+                        "foo-group"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"description\": \"It is pretty awesome!\",\n  \"something\": \"else\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Update part of a document item",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
+                    "path": [
+                        "api",
+                        "document",
+                        "foo-group",
+                        "bar-item"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"content\": \"Modified content.\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Update a document item",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
+                    "path": [
+                        "api",
+                        "document",
+                        "foo-group",
+                        "bar-item"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"title\": \"Something\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Create a document item (auto ID)",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/document/foo-group/$",
+                    "path": [
+                        "api",
+                        "document",
+                        "foo-group",
+                        "$"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"title\": \"Test Article\",\n  \"subtitle\": \"Subtitle...\",\n  \"content\": \"Hello World!!!\"\n}"
                 }
             }
         }
