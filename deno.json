@@ -4,5 +4,8 @@
     "dev:debugger": "DEV=1 PASSCODE=test deno run -A --unstable --watch --inspect-wait app.ts",
     "start": "deno run --allow-net --allow-env --unstable --watch app.ts"
   },
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  },
   "exclude": ["/www", "/admin-ui"]
 }

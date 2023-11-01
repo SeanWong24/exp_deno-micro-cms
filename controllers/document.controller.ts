@@ -9,10 +9,10 @@ import {
   UseHook,
 } from "../deps/alosaur.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
-import { checkIfKeyPartIsValid, db, resolveKeyPath } from "../utils/db.ts";
 import { ulid } from "../deps/ulid.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
 import { CatchErrors } from "../utils/catch-errors.hook.ts";
+import { DBServices } from "../services/db.service.ts";
 
 type DocumentItem = {
   title: string;
@@ -31,13 +31,15 @@ export class DocumentController {
   static readonly GROUPS_PREFIX = "groups";
   static readonly ITEMS_PREFIX = "items";
 
+  constructor(private dbService: DBServices) {}
+
   @Get()
   async getGroupList() {
-    const key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.GROUPS_PREFIX,
     ]);
     const groups = [];
-    for await (const group of db.list({ prefix: key })) {
+    for await (const group of this.dbService.db.list({ prefix: key })) {
       groups.push({
         id: group.key.at(key.length),
         metadata: group.value,
@@ -48,17 +50,22 @@ export class DocumentController {
 
   @Get("/:group")
   async getGroup(@Param("group") id: string) {
-    const key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.GROUPS_PREFIX,
       id,
     ]);
-    const metadata = (await db.get(key)).value;
+    const metadata = (await this.dbService.db.get(key)).value;
     const items = [];
-    const itemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
-      DocumentController.ITEMS_PREFIX,
-      id,
-    ]);
-    for await (const item of db.list({ prefix: itemKeyPrefix })) {
+    const itemKeyPrefix = this.dbService.resolveKeyPath(
+      DBNamespaces.APP_DOCUMENT,
+      [
+        DocumentController.ITEMS_PREFIX,
+        id,
+      ],
+    );
+    for await (
+      const item of this.dbService.db.list({ prefix: itemKeyPrefix })
+    ) {
       const value = item.value as DocumentItemWithTimestamps;
       items.push({
         id: item.key.at(itemKeyPrefix.length),
@@ -82,32 +89,40 @@ export class DocumentController {
     @QueryParam("rename") rename: string,
     @Body() metadata: unknown,
   ) {
-    let key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+    let key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.GROUPS_PREFIX,
       id,
     ]);
-    const atomic = db.atomic();
-    if (checkIfKeyPartIsValid(rename)) {
-      metadata ??= (await db.get(key))?.value;
+    const atomic = this.dbService.db.atomic();
+    if (this.dbService.checkIfKeyPartIsValid(rename)) {
+      metadata ??= (await this.dbService.db.get(key))?.value;
       atomic.delete(key);
-      key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+      key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
         DocumentController.GROUPS_PREFIX,
         rename,
       ]);
-      const oldItemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
-        DocumentController.ITEMS_PREFIX,
-        id,
-      ]);
-      const itemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
-        DocumentController.ITEMS_PREFIX,
-        rename,
-      ]);
-      for await (const item of db.list({ prefix: oldItemKeyPrefix })) {
+      const oldItemKeyPrefix = this.dbService.resolveKeyPath(
+        DBNamespaces.APP_DOCUMENT,
+        [
+          DocumentController.ITEMS_PREFIX,
+          id,
+        ],
+      );
+      const itemKeyPrefix = this.dbService.resolveKeyPath(
+        DBNamespaces.APP_DOCUMENT,
+        [
+          DocumentController.ITEMS_PREFIX,
+          rename,
+        ],
+      );
+      for await (
+        const item of this.dbService.db.list({ prefix: oldItemKeyPrefix })
+      ) {
         const itemKey = [
           ...itemKeyPrefix,
           ...item.key.slice(oldItemKeyPrefix.length),
         ];
-        atomic.set(itemKey, (await db.get(item.key)).value);
+        atomic.set(itemKey, (await this.dbService.db.get(item.key)).value);
         atomic.delete(item.key);
       }
     }
@@ -117,16 +132,21 @@ export class DocumentController {
   @UseHook(AuthHook)
   @Delete("/:group")
   async deleteGroup(@Param("group") id: string) {
-    const key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.GROUPS_PREFIX,
       id,
     ]);
-    const itemKeyPrefix = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
-      DocumentController.ITEMS_PREFIX,
-      id,
-    ]);
-    const atomic = db.atomic();
-    for await (const item of db.list({ prefix: itemKeyPrefix })) {
+    const itemKeyPrefix = this.dbService.resolveKeyPath(
+      DBNamespaces.APP_DOCUMENT,
+      [
+        DocumentController.ITEMS_PREFIX,
+        id,
+      ],
+    );
+    const atomic = this.dbService.db.atomic();
+    for await (
+      const item of this.dbService.db.list({ prefix: itemKeyPrefix })
+    ) {
       atomic.delete(item.key);
     }
     await atomic.delete(key).commit();
@@ -138,12 +158,14 @@ export class DocumentController {
     @Param("group") groupId: string,
     @Param("item") itemId: string,
   ) {
-    const key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.ITEMS_PREFIX,
       groupId,
       itemId,
     ]);
-    const item = (await db.get(key)).value as DocumentItem | null;
+    const item = (await this.dbService.db.get(key)).value as
+      | DocumentItem
+      | null;
     if (!item) {
       return "";
     }
@@ -161,16 +183,17 @@ export class DocumentController {
     if (itemId === "new") {
       itemId = ulid();
     }
-    const key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.ITEMS_PREFIX,
       groupId,
       itemId,
     ]);
     const now = new Date();
-    const timeCreated =
-      ((await db.get(key)).value as DocumentItemWithTimestamps | null)
-        ?.timeCreated ?? now;
-    return await db.set(
+    const timeCreated = ((await this.dbService.db.get(key)).value as
+      | DocumentItemWithTimestamps
+      | null)
+      ?.timeCreated ?? now;
+    return await this.dbService.db.set(
       key,
       {
         ...documentItem,
@@ -186,12 +209,12 @@ export class DocumentController {
     @Param("group") groupId: string,
     @Param("item") itemId: string,
   ) {
-    const key = resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [
       DocumentController.ITEMS_PREFIX,
       groupId,
       itemId,
     ]);
-    await db.delete(key);
+    await this.dbService.db.delete(key);
     return "";
   }
 }

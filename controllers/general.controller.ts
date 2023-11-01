@@ -8,18 +8,20 @@ import {
   QueryParam,
   UseHook,
 } from "../deps/alosaur.ts";
-import { db, resolveKeyPath } from "../utils/db.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import { AuthHook } from "../utils/auth.hook.ts";
 import { CatchErrors } from "../utils/catch-errors.hook.ts";
+import { DBServices } from "../services/db.service.ts";
 
 @UseHook(CatchErrors)
 @Controller("/general")
 export class GeneralController {
+  constructor(private dbService: DBServices) {}
+
   @Get()
   async getList(@QueryParam("detail") withDetail: boolean) {
-    const key = resolveKeyPath(DBNamespaces.APP_GENERAL, []);
-    const kvListIterator = db.list({ prefix: key });
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_GENERAL, []);
+    const kvListIterator = this.dbService.db.list({ prefix: key });
     const list = [];
     for await (const item of kvListIterator) {
       list.push(
@@ -33,8 +35,8 @@ export class GeneralController {
 
   @Get("/:id")
   async getValue(@Param("id") id: string) {
-    const key = resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
-    return (await db.get(key)).value ?? "";
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
+    return (await this.dbService.db.get(key)).value ?? "";
   }
 
   @UseHook(AuthHook)
@@ -43,15 +45,15 @@ export class GeneralController {
     @Param("id") id: string,
     @Body() value: unknown,
   ) {
-    const key = resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
-    return await db.set(key, value);
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
+    return await this.dbService.db.set(key, value);
   }
 
   @UseHook(AuthHook)
   @Delete("/:id")
   async deleteValue(@Param("id") id: string) {
-    const key = resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
-    await db.delete(key);
+    const key = this.dbService.resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
+    await this.dbService.db.delete(key);
     return "";
   }
 }

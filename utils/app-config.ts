@@ -1,3 +1,5 @@
+export type DBInitCallback = (db: Deno.Kv) => Promise<void>;
+
 export type AppConfig = {
   DEV?: string;
   FE_ROOT_PATH: string;
@@ -5,7 +7,7 @@ export type AppConfig = {
   ADMIN_ROOT_PATH: string;
   ADMIN_INDEX_PATH?: string;
   DB_PATH?: string;
-  DB_INIT?: (db: Deno.Kv) => Promise<void>;
+  DB_INIT?: DBInitCallback;
 };
 
 export const APP_CONFIG: AppConfig = {

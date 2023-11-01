@@ -1,16 +1,15 @@
-import { App, CorsBuilder, SpaBuilder } from "./deps/alosaur.ts";
+import { App, container, CorsBuilder, SpaBuilder } from "./deps/alosaur.ts";
 import { HomeArea } from "./areas/home.area.ts";
 import { CoreArea } from "./areas/core.area.ts";
 import { APP_CONFIG, AppConfig } from "./utils/app-config.ts";
-import { initializeDB } from "./utils/db.ts";
+import { DBServices } from "./services/db.service.ts";
 
 export async function startApp(appConfig?: Partial<AppConfig>) {
   if (appConfig) {
     Object.assign(APP_CONFIG, appConfig);
   }
 
-  const db = await initializeDB();
-  await appConfig?.DB_INIT?.(db);
+  await initializeDB();
 
   const app = new App({
     areas: [HomeArea, CoreArea],
@@ -48,4 +47,12 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
   );
 
   app.listen();
+}
+
+async function initializeDB() {
+  const dbService = container.resolve(DBServices);
+  await dbService.initialize({
+    path: APP_CONFIG.DB_PATH,
+    init: APP_CONFIG.DB_INIT,
+  });
 }
