@@ -1,21 +1,21 @@
 {
     "info": {
-        "_postman_id": "c54ca231-a71a-47e6-a9cb-51800fe73433",
+        "_postman_id": "25c536f6-33e6-4afe-a8bb-50172f16cf19",
         "name": "test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
     },
     "item": [
         {
-            "name": "Get general header",
+            "name": "Get a general info item's value",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/general/header",
+                    "raw": "http://localhost:8000/api/general/something",
                     "path": [
                         "api",
                         "general",
-                        "header"
+                        "something"
                     ],
                     "protocol": "http",
                     "host": [
@@ -26,15 +26,15 @@
             }
         },
         {
-            "name": "Delete general header",
+            "name": "Delete a general info item",
             "request": {
                 "method": "DELETE",
                 "url": {
-                    "raw": "http://localhost:8000/api/general/header",
+                    "raw": "http://localhost:8000/api/general/something",
                     "path": [
                         "api",
                         "general",
-                        "header"
+                        "something"
                     ],
                     "protocol": "http",
                     "host": [
@@ -45,15 +45,15 @@
             }
         },
         {
-            "name": "Set general header",
+            "name": "Create a general info item",
             "request": {
                 "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/general/header",
+                    "raw": "http://localhost:8000/api/general/something",
                     "path": [
                         "api",
                         "general",
-                        "header"
+                        "something"
                     ],
                     "protocol": "http",
                     "host": [
@@ -61,6 +61,12 @@
                     ],
                     "port": "8000"
                 },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
                 "body": {
                     "mode": "raw",
                     "options": {
@@ -68,12 +74,12 @@
                             "language": "json"
                         }
                     },
-                    "raw": "\"Header\""
+                    "raw": "{\n  \"a\": 1,\n  \"b\": 2\n}"
                 }
             }
         },
         {
-            "name": "Get general list",
+            "name": "Get general info list",
             "request": {
                 "method": "GET",
                 "url": {
@@ -91,7 +97,7 @@
             }
         },
         {
-            "name": "Get general list with detail",
+            "name": "Get general info list with detail",
             "request": {
                 "method": "GET",
                 "url": {
@@ -360,6 +366,74 @@
                         "localhost"
                     ],
                     "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Update part of a general info item's value",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "http://localhost:8000/api/general/something",
+                    "path": [
+                        "api",
+                        "general",
+                        "something"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"b\": 0,\n  \"c\": 3\n}"
+                }
+            }
+        },
+        {
+            "name": "Update a general info item's value",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "http://localhost:8000/api/general/something",
+                    "path": [
+                        "api",
+                        "general",
+                        "something"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"foo\": \"bar\"\n}"
                 }
             }
         }
