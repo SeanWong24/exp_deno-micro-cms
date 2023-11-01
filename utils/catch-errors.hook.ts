@@ -20,11 +20,15 @@ export class CatchErrors implements HookTarget<unknown, unknown> {
    * this hook run only throw exception in controller action
    */
   onCatchAction(context: HttpContext<unknown>, _payload: unknown) {
-    if (context.response.error instanceof InvalidDBKeyError) {
+    const error = context.response.error;
+    if (error instanceof InvalidDBKeyError) {
       throw new HttpError(Status.BadRequest, "Invalid DB key.");
     }
-    if (context.response.error instanceof DBNotInitializedError) {
-      throw new HttpError(Status.BadRequest, "DB not initialized.");
+    if (error instanceof DBNotInitializedError) {
+      throw new HttpError(Status.InternalServerError, "DB not initialized.");
+    }
+    if (error instanceof Error && error.message) {
+      throw new HttpError(Status.InternalServerError, error.message);
     }
   }
 }
