@@ -13,7 +13,6 @@ import {
 import { AuthHook } from "../utils/auth.hook.ts";
 import { CatchErrorsHook } from "../utils/catch-errors.hook.ts";
 import { GeneralInfoService } from "../services/general-info.service.ts";
-import { DBEntityNotExisted } from "../utils/errors.ts";
 
 @UseHook(CatchErrorsHook)
 @Controller("/general")
@@ -27,9 +26,7 @@ export class GeneralInfoController {
 
   @Get("/:id")
   async getValue(@Param("id") id: string) {
-    const value = await this.generalInfoService.getValue(id);
-    if (value == null) throw new DBEntityNotExisted();
-    return value;
+    return await this.generalInfoService.getValue(id);
   }
 
   @UseHook(AuthHook)

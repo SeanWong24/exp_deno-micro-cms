@@ -29,21 +29,28 @@ export class GeneralInfoService {
 
   async getValue(id: string) {
     const key = this.dbService.resolveKeyPath(DBNamespaces.APP_GENERAL, [id]);
-    return (await this.dbService.db.get(key)).value;
+    const item = await this.dbService.db.get(key);
+    if (item?.versionstamp == null) throw new DBEntityNotExisted();
+    return item.value;
   }
 
   async createNewItem(id: string, value: unknown) {
-    if (await this.getValue(id) != null) throw new DBEntityAlreadyExisted();
-    return await this.#setValue(id, value);
+    try {
+      await this.getValue(id);
+    } catch (error) {
+      if (error instanceof DBEntityNotExisted) {
+        return await this.#setValue(id, value);
+      }
+    }
+    throw new DBEntityAlreadyExisted();
   }
 
   async updateValue(id: string, value: unknown) {
-    if (await this.getValue(id) == null) throw new DBEntityNotExisted();
+    await this.getValue(id);
     return await this.#setValue(id, value);
   }
 
   async updatePartialValue(id: string, value: unknown) {
-    if (await this.getValue(id) == null) throw new DBEntityNotExisted();
     const oldValue = await this.getValue(id);
     if (typeof oldValue !== "object") throw new DBEntityNotAsObject();
     return await this.#setValue(id, Object.assign(oldValue as object, value));
