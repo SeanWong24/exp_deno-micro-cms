@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "dev": "DEV=1 PASSCODE=test deno run -A --unstable --watch app.ts",
-    "dev:debugger": "DEV=1 PASSCODE=test deno run -A --unstable --watch --inspect-wait app.ts",
+    "dev": "DEV=1 PASSCODE=test DB_PATH=./temp/db deno run -A --unstable --watch app.ts",
+    "dev:debugger": "DEV=1 PASSCODE=test DB_PATH=./temp/db deno run -A --unstable --watch --inspect-wait app.ts",
     "start": "deno run --allow-net --allow-env --unstable --watch app.ts",
     "docs:generate": "deno run --allow-env --allow-read --allow-write openapi.ts"
   },
