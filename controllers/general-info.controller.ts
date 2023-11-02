@@ -12,12 +12,17 @@ import {
 } from "../deps/alosaur.ts";
 import { AuthHook } from "../hooks/auth.hook.ts";
 import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
+import { SERVICE_HOLDER } from "../service-holder.ts";
 import { GeneralInfoService } from "../services/general-info.service.ts";
 
 @UseHook(CatchErrorsHook)
 @Controller("/general")
 export class GeneralInfoController {
-  constructor(private generalInfoService: GeneralInfoService) {}
+  // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+  // constructor(private generalInfoService: GeneralInfoService) {}
+  generalInfoService: GeneralInfoService = SERVICE_HOLDER.get(
+    GeneralInfoService,
+  );
 
   @Get()
   async getList(@QueryParam("detail") withDetail: boolean) {

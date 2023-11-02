@@ -1,4 +1,6 @@
-import { Singleton } from "../deps/alosaur.ts";
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+// import { Singleton } from "../deps/alosaur.ts";
+import { SERVICE_HOLDER } from "../service-holder.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import {
   DBEntityAlreadyExisted,
@@ -23,7 +25,8 @@ class GroupNotExistedError extends DBEntityNotExisted {
   message = "The group does not exist.";
 }
 
-@Singleton()
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+// @Singleton()
 export class DocumentService {
   static readonly GROUPS_PREFIX = "groups";
   static readonly ITEMS_PREFIX = "items";
@@ -268,3 +271,9 @@ export class DocumentService {
     );
   }
 }
+
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+SERVICE_HOLDER.set(
+  DocumentService,
+  new DocumentService(SERVICE_HOLDER.get(DBService)),
+);

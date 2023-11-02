@@ -17,14 +17,20 @@ import {
   DocumentService,
 } from "../services/document.service.ts";
 import { ulid } from "../deps/ulid.ts";
+import { SERVICE_HOLDER } from "../service-holder.ts";
 
 @UseHook(CatchErrorsHook)
 @Controller("/document")
 export class DocumentController {
-  constructor(private documentService: DocumentService) {}
+  // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+  // constructor(private documentService: DocumentService) {}
+  documentService: DocumentService = SERVICE_HOLDER.get(
+    DocumentService,
+  );
 
   @Get()
   async getGroupList() {
+    console.log(this.documentService);
     return await this.documentService.getGroupList();
   }
 

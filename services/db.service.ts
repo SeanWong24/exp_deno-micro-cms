@@ -1,10 +1,13 @@
 /// <reference lib="deno.unstable" />
 
-import { Singleton } from "../deps/alosaur.ts";
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+// import { Singleton } from "../deps/alosaur.ts";
+import { SERVICE_HOLDER } from "../service-holder.ts";
 import { DBInitCallback } from "../utils/app-config.ts";
 import { DBNotInitializedError, InvalidDBKeyError } from "../utils/errors.ts";
 
-@Singleton()
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+// @Singleton()
 export class DBService {
   #db?: Deno.Kv;
   get db() {
@@ -40,3 +43,6 @@ export class DBService {
     return true;
   }
 }
+
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+SERVICE_HOLDER.set(DBService, new DBService());

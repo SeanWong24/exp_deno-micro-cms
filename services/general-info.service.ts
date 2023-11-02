@@ -1,4 +1,6 @@
-import { Singleton } from "../deps/alosaur.ts";
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+// import { Singleton } from "../deps/alosaur.ts";
+import { SERVICE_HOLDER } from "../service-holder.ts";
 import { DBNamespaces } from "../utils/db-namespaces.ts";
 import {
   DBEntityAlreadyExisted,
@@ -7,7 +9,8 @@ import {
 } from "../utils/errors.ts";
 import { DBService } from "./db.service.ts";
 
-@Singleton()
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+// @Singleton()
 export class GeneralInfoService {
   constructor(private dbService: DBService) {
     console.log(dbService);
@@ -69,3 +72,9 @@ export class GeneralInfoService {
     return await this.dbService.db.set(key, value);
   }
 }
+
+// TODO use back TSyringe when decorator metadata is supported in Deno Deploy
+SERVICE_HOLDER.set(
+  GeneralInfoService,
+  new GeneralInfoService(SERVICE_HOLDER.get(DBService)),
+);
