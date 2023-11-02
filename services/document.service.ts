@@ -31,9 +31,7 @@ export class DocumentService {
   static readonly GROUPS_PREFIX = "groups";
   static readonly ITEMS_PREFIX = "items";
 
-  constructor(private dbService: DBService) {
-    console.log(dbService);
-  }
+  constructor(private dbService: DBService) {}
 
   async getGroupList() {
     const key = this.dbService.resolveKeyPath(DBNamespaces.APP_DOCUMENT, [

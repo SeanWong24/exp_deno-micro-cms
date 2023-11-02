@@ -12,9 +12,7 @@ import { DBService } from "./db.service.ts";
 // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
 // @Singleton()
 export class GeneralInfoService {
-  constructor(private dbService: DBService) {
-    console.log(dbService);
-  }
+  constructor(private dbService: DBService) {}
 
   async getList(withDetail: boolean) {
     const key = this.dbService.resolveKeyPath(DBNamespaces.APP_GENERAL, []);
