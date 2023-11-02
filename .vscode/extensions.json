@@ -3,6 +3,7 @@
         "denoland.vscode-deno",
         "eamodio.gitlens",
         "rangav.vscode-thunder-client",
-        "runem.lit-plugin"
+        "runem.lit-plugin",
+        "42crunch.vscode-openapi"
     ]
 }

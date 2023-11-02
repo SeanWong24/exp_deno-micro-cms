@@ -1,8 +1,19 @@
-import { App, container, CorsBuilder, SpaBuilder } from "./deps/alosaur.ts";
+import {
+  App,
+  AppSettings,
+  container,
+  CorsBuilder,
+  SpaBuilder,
+} from "./deps/alosaur.ts";
 import { HomeArea } from "./areas/home.area.ts";
 import { CoreArea } from "./areas/core.area.ts";
 import { APP_CONFIG, AppConfig } from "./utils/app-config.ts";
 import { DBServices } from "./services/db.service.ts";
+
+export const settings: AppSettings = {
+  areas: [HomeArea, CoreArea],
+  logging: APP_CONFIG.DEV ? true : false,
+};
 
 export async function startApp(appConfig?: Partial<AppConfig>) {
   if (appConfig) {
@@ -11,10 +22,7 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
 
   await initializeDB();
 
-  const app = new App({
-    areas: [HomeArea, CoreArea],
-    logging: APP_CONFIG.DEV ? true : false,
-  });
+  const app = new App(settings);
 
   if (APP_CONFIG.DEV) {
     app.useCors(
