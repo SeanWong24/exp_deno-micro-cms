@@ -10,8 +10,8 @@ import {
   QueryParam,
   UseHook,
 } from "../deps/alosaur.ts";
-import { AuthHook } from "../utils/auth.hook.ts";
-import { CatchErrorsHook } from "../utils/catch-errors.hook.ts";
+import { AuthHook } from "../hooks/auth.hook.ts";
+import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
 import {
   type DocumentItem,
   DocumentService,
@@ -21,9 +21,6 @@ import { ulid } from "../deps/ulid.ts";
 @UseHook(CatchErrorsHook)
 @Controller("/document")
 export class DocumentController {
-  static readonly GROUPS_PREFIX = "groups";
-  static readonly ITEMS_PREFIX = "items";
-
   constructor(private documentService: DocumentService) {}
 
   @Get()

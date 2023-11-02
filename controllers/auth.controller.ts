@@ -1,15 +1,17 @@
 import {
   Controller,
   Get,
-  HttpError,
   Post,
   QueryParam,
   Res,
   UseHook,
 } from "../deps/alosaur.ts";
-import { deleteCookie, setCookie, Status } from "../deps/std/http.ts";
-import { AuthHook } from "../utils/auth.hook.ts";
+import { deleteCookie, setCookie } from "../deps/std/http.ts";
+import { AuthHook } from "../hooks/auth.hook.ts";
+import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
+import { NotAuthenticatedError } from "../utils/errors.ts";
 
+@UseHook(CatchErrorsHook)
 @Controller("/auth")
 export class AuthController {
   @UseHook(AuthHook)
@@ -22,7 +24,7 @@ export class AuthController {
   signIn(@QueryParam("passcode") passcode: string, @Res() response: Response) {
     const truthPasscode = Deno.env.get("PASSCODE");
     if (truthPasscode !== passcode) {
-      throw new HttpError(Status.Forbidden, "Invalid passcode.");
+      throw new NotAuthenticatedError("Invalid passcode.");
     }
     setCookie(response.headers, {
       name: "authenticated",

@@ -1,5 +1,6 @@
-import { HookTarget, HttpContext, HttpError } from "../deps/alosaur.ts";
-import { getCookies, Status } from "../deps/std/http.ts";
+import { HookTarget, HttpContext } from "../deps/alosaur.ts";
+import { getCookies } from "../deps/std/http.ts";
+import { NotAuthenticatedError } from "../utils/errors.ts";
 
 export class AuthHook implements HookTarget<unknown, unknown> {
   /**
@@ -9,7 +10,7 @@ export class AuthHook implements HookTarget<unknown, unknown> {
     const headers = context.request.headers;
     const cookies = getCookies(headers);
     if (!cookies["authenticated"]) {
-      throw new HttpError(Status.Forbidden, "Not authenticated.");
+      throw new NotAuthenticatedError();
     }
   }
 

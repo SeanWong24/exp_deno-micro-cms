@@ -10,8 +10,8 @@ import {
   QueryParam,
   UseHook,
 } from "../deps/alosaur.ts";
-import { AuthHook } from "../utils/auth.hook.ts";
-import { CatchErrorsHook } from "../utils/catch-errors.hook.ts";
+import { AuthHook } from "../hooks/auth.hook.ts";
+import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
 import { GeneralInfoService } from "../services/general-info.service.ts";
 
 @UseHook(CatchErrorsHook)
