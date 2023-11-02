@@ -5,7 +5,7 @@ import { DBInitCallback } from "../utils/app-config.ts";
 import { DBNotInitializedError, InvalidDBKeyError } from "../utils/errors.ts";
 
 @Singleton()
-export class DBServices {
+export class DBService {
   #db?: Deno.Kv;
   get db() {
     const db = this.#db;

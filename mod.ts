@@ -8,7 +8,7 @@ import {
 import { HomeArea } from "./areas/home.area.ts";
 import { CoreArea } from "./areas/core.area.ts";
 import { APP_CONFIG, AppConfig } from "./utils/app-config.ts";
-import { DBServices } from "./services/db.service.ts";
+import { DBService } from "./services/db.service.ts";
 import * as path from "./deps/std/path.ts";
 
 export const settings: AppSettings = {
@@ -63,7 +63,7 @@ async function initializeDB() {
     const directoryPath = path.dirname(APP_CONFIG.DB_PATH);
     await Deno.mkdir(directoryPath, { recursive: true });
   }
-  const dbService = container.resolve(DBServices);
+  const dbService = container.resolve(DBService);
   await dbService.initialize({
     path: APP_CONFIG.DB_PATH,
     init: APP_CONFIG.DB_INIT,

@@ -5,11 +5,11 @@ import {
   DBEntityNotAsObject,
   DBEntityNotExisted,
 } from "../utils/errors.ts";
-import { DBServices } from "./db.service.ts";
+import { DBService } from "./db.service.ts";
 
 @Singleton()
 export class GeneralInfoService {
-  constructor(private dbService: DBServices) {
+  constructor(private dbService: DBService) {
     console.log(dbService);
   }
 

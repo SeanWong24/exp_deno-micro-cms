@@ -6,7 +6,7 @@ import {
   DBEntityNotExisted,
   InvalidDBKeyError,
 } from "../utils/errors.ts";
-import { DBServices } from "./db.service.ts";
+import { DBService } from "./db.service.ts";
 
 export type DocumentItem = {
   title?: string;
@@ -28,7 +28,7 @@ export class DocumentService {
   static readonly GROUPS_PREFIX = "groups";
   static readonly ITEMS_PREFIX = "items";
 
-  constructor(private dbService: DBServices) {
+  constructor(private dbService: DBService) {
     console.log(dbService);
   }
 
