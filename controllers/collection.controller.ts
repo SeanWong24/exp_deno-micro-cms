@@ -24,7 +24,7 @@ import { SERVICE_HOLDER } from "../service-holder.ts";
 export class CollectionController {
   // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
   // constructor(private collectionService: CollectionService) {}
-  collectionService: CollectionService = SERVICE_HOLDER.get(
+  collectionService = SERVICE_HOLDER.get(
     CollectionService,
   );
 
@@ -59,7 +59,10 @@ export class CollectionController {
       await this.collectionService.renameCollection(id, newName);
     }
     if (!metadata) return;
-    return this.collectionService.updateCollectionMetadata(newName || id, metadata);
+    return this.collectionService.updateCollectionMetadata(
+      newName || id,
+      metadata,
+    );
   }
 
   @UseHook(AuthHook)
@@ -115,7 +118,11 @@ export class CollectionController {
     @Param("item") itemId: string,
     @Body() collectionItem: CollectionItem,
   ) {
-    return await this.collectionService.updateItem(collectionId, itemId, collectionItem);
+    return await this.collectionService.updateItem(
+      collectionId,
+      itemId,
+      collectionItem,
+    );
   }
 
   @UseHook(AuthHook)

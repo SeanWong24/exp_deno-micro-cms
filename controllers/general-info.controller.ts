@@ -20,7 +20,7 @@ import { GeneralInfoService } from "../services/general-info.service.ts";
 export class GeneralInfoController {
   // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
   // constructor(private generalInfoService: GeneralInfoService) {}
-  generalInfoService: GeneralInfoService = SERVICE_HOLDER.get(
+  generalInfoService = SERVICE_HOLDER.get(
     GeneralInfoService,
   );
 
