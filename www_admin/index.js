@@ -22,7 +22,7 @@ export class AppRoot extends LitElement {
 
   render() {
     return html`
-      <h1>MicroCMS</h1>
+      <h1>MicroCMS Admin</h1>
       <hr />
       ${this.#renderGeneralItems()}
       <hr />
@@ -100,7 +100,7 @@ export class AppRoot extends LitElement {
               (response) => response.text(),
             );
             await fetch(`/api/general/${key}`, {
-              method: "POST",
+              method: "PUT",
               body: prompt("Enter the value (as JSON)", value) ?? value,
               headers: {
                 "Content-Type": "application/json",
@@ -145,7 +145,7 @@ export class AppRoot extends LitElement {
         }`,
         {
           method: "POST",
-          body: prompt("Enter the value (as JSON)", ""),
+          body: prompt("Enter the value (as JSON)", '""') || '""',
           headers: {
             "Content-Type": "application/json",
           },
@@ -189,8 +189,13 @@ export class AppRoot extends LitElement {
               `/api/document/${group.id}`,
             ).then((response) => response.json());
             await fetch(`/api/document/${group.id}`, {
-              method: "POST",
-              body: prompt("Enter the metadata (as JSON)", metadata) ?? metadata,
+              method: "PUT",
+              body:
+                prompt(
+                  "Enter the metadata (as JSON)",
+                  JSON.stringify(metadata),
+                ) ??
+                  JSON.stringify(metadata),
               headers: {
                 "Content-Type": "application/json",
               },
@@ -207,10 +212,10 @@ export class AppRoot extends LitElement {
               await this.#authenticate();
             }
             await fetch(
-              `/api/document/${group.id}?rename=${
+              `/api/document/${group.id}?newName=${
                 prompt("Enter a new group name", group.id) || group.id
               }`,
-              { method: "POST", credentials: "include" },
+              { method: "PUT", credentials: "include" },
             );
             this.#updateDocumentGroups();
           }}
@@ -255,7 +260,7 @@ export class AppRoot extends LitElement {
         }`,
         {
           method: "POST",
-          body: prompt("Enter the metadata (as JSON)", ""),
+          body: prompt("Enter the metadata (as JSON)", "{}") ?? "{}",
           headers: {
             "Content-Type": "application/json",
           },
@@ -304,14 +309,12 @@ export class AppRoot extends LitElement {
                 await fetch(
                   `/api/document/${item.groupId}/${item.id}`,
                   {
-                    method: "POST",
+                    method: "PATCH",
                     body: JSON.stringify({
                       title: prompt(
                         "Enter the updated title",
                         item.title,
                       ) ?? item.title,
-                      subtitle: item.subtitle,
-                      content: item.content,
                     }),
                     headers: {
                       "Content-Type": "application/json",
@@ -332,14 +335,12 @@ export class AppRoot extends LitElement {
                 await fetch(
                   `/api/document/${item.groupId}/${item.id}`,
                   {
-                    method: "POST",
+                    method: "PATCH",
                     body: JSON.stringify({
-                      title: item.title,
                       subtitle: prompt(
                         "Enter the updated subtitle",
                         item.subtitle,
                       ) ?? item.subtitle,
-                      content: item.content,
                     }),
                     headers: {
                       "Content-Type": "application/json",
@@ -363,10 +364,8 @@ export class AppRoot extends LitElement {
                 await fetch(
                   `/api/document/${item.groupId}/${item.id}`,
                   {
-                    method: "POST",
+                    method: "PATCH",
                     body: JSON.stringify({
-                      title: itemWithContent.title,
-                      subtitle: itemWithContent.subtitle,
                       content: prompt(
                         "Enter the updated content",
                         itemWithContent.content,
@@ -409,7 +408,7 @@ export class AppRoot extends LitElement {
           }
           if (!this.selectedDocumentGroupId) return;
           await fetch(
-            `/api/document/${this.selectedDocumentGroupId}/new`,
+            `/api/document/${this.selectedDocumentGroupId}/$`,
             {
               method: "POST",
               body: JSON.stringify({
