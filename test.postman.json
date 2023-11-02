@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "21c3af63-f200-4e4f-9d29-6f43d3b88fb5",
+        "_postman_id": "20db9e56-fee2-41a4-be2f-094559ae9bde",
         "name": "test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
@@ -122,14 +122,14 @@
             }
         },
         {
-            "name": "Get document group",
+            "name": "Get a collection",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group",
+                    "raw": "http://localhost:8000/api/collection/foo-group",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group"
                     ],
                     "protocol": "http",
@@ -141,14 +141,14 @@
             }
         },
         {
-            "name": "Create a document group",
+            "name": "Create a collection",
             "request": {
                 "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group",
+                    "raw": "http://localhost:8000/api/collection/foo-group",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group"
                     ],
                     "protocol": "http",
@@ -175,14 +175,14 @@
             }
         },
         {
-            "name": "Delete document group",
+            "name": "Delete a collection",
             "request": {
                 "method": "DELETE",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group",
+                    "raw": "http://localhost:8000/api/collection/foo-group",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group"
                     ],
                     "protocol": "http",
@@ -194,14 +194,14 @@
             }
         },
         {
-            "name": "Get document group list",
+            "name": "Get collection list",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/document",
+                    "raw": "http://localhost:8000/api/collection",
                     "path": [
                         "api",
-                        "document"
+                        "collection"
                     ],
                     "protocol": "http",
                     "host": [
@@ -212,14 +212,14 @@
             }
         },
         {
-            "name": "Create a document item",
+            "name": "Create a collection item",
             "request": {
                 "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
+                    "raw": "http://localhost:8000/api/collection/foo-group/bar-item",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group",
                         "bar-item"
                     ],
@@ -242,19 +242,19 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"title\": \"Test Article\",\n  \"subtitle\": \"Subtitle...\",\n  \"content\": \"Hello World!!!\"\n}"
+                    "raw": "{\n  \"title\": \"Test Article\",\n  \"subtitle\": \"Subtitle...\",\n  \"content\": \"Hello World!!!\",\n  \"type\": \"text/plain\"\n}"
                 }
             }
         },
         {
-            "name": "Get a document item",
+            "name": "Get a collection item",
             "request": {
                 "method": "GET",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
+                    "raw": "http://localhost:8000/api/collection/foo-group/bar-item",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group",
                         "bar-item"
                     ],
@@ -267,14 +267,14 @@
             }
         },
         {
-            "name": "Delete document item",
+            "name": "Delete a collection item",
             "request": {
                 "method": "DELETE",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
+                    "raw": "http://localhost:8000/api/collection/foo-group/bar-item",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group",
                         "bar-item"
                     ],
@@ -400,14 +400,14 @@
             }
         },
         {
-            "name": "Update a document group",
+            "name": "Update a collection",
             "request": {
                 "method": "PUT",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group",
+                    "raw": "http://localhost:8000/api/collection/foo-group",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group"
                     ],
                     "protocol": "http",
@@ -434,14 +434,14 @@
             }
         },
         {
-            "name": "Update part of a document group",
+            "name": "Update part of a collection",
             "request": {
                 "method": "PATCH",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group",
+                    "raw": "http://localhost:8000/api/collection/foo-group",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group"
                     ],
                     "protocol": "http",
@@ -472,10 +472,10 @@
             "request": {
                 "method": "PATCH",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
+                    "raw": "http://localhost:8000/api/collection/foo-group/bar-item",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group",
                         "bar-item"
                     ],
@@ -498,7 +498,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"content\": \"Modified content.\"\n}"
+                    "raw": "{\n  \"content\": \"Modified content.\",\n  \"type\": \"text/markdown\"\n}"
                 }
             }
         },
@@ -507,10 +507,10 @@
             "request": {
                 "method": "PUT",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group/bar-item",
+                    "raw": "http://localhost:8000/api/collection/foo-group/bar-item",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group",
                         "bar-item"
                     ],
@@ -533,19 +533,19 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"title\": \"Something\"\n}"
+                    "raw": "{\n  \"title\": \"Something\",\n  \"type\": \"text/html\"\n}"
                 }
             }
         },
         {
-            "name": "Create a document item (auto ID)",
+            "name": "Create a collection item (auto ID)",
             "request": {
                 "method": "POST",
                 "url": {
-                    "raw": "http://localhost:8000/api/document/foo-group/$",
+                    "raw": "http://localhost:8000/api/collection/foo-group/$",
                     "path": [
                         "api",
-                        "document",
+                        "collection",
                         "foo-group",
                         "$"
                     ],
@@ -568,7 +568,7 @@
                             "language": "json"
                         }
                     },
-                    "raw": "{\n  \"title\": \"Test Article\",\n  \"subtitle\": \"Subtitle...\",\n  \"content\": \"Hello World!!!\"\n}"
+                    "raw": "{\n  \"title\": \"Test Article\",\n  \"subtitle\": \"Subtitle...\",\n  \"content\": \"Hello World!!!\",\n  \"type\": \"text/plain\"\n}"
                 }
             }
         }
