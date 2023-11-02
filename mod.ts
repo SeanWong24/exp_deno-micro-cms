@@ -59,8 +59,10 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
 }
 
 async function initializeDB() {
-  const directoryPath = path.dirname(APP_CONFIG.DB_PATH ?? "");
-  await Deno.mkdir(directoryPath, { recursive: true });
+  if (APP_CONFIG.DB_PATH) {
+    const directoryPath = path.dirname(APP_CONFIG.DB_PATH);
+    await Deno.mkdir(directoryPath, { recursive: true });
+  }
   const dbService = container.resolve(DBServices);
   await dbService.initialize({
     path: APP_CONFIG.DB_PATH,
