@@ -14,6 +14,7 @@ export type DocumentItem = {
   title?: string;
   subtitle?: string;
   content?: string;
+  metadata?: unknown;
 };
 
 export type DocumentItemWithTimestamps = DocumentItem & {
