@@ -316,8 +316,8 @@ export class AppRoot extends LitElement {
                         ...item.metadata,
                         title: prompt(
                           "Enter the updated title",
-                          item.title,
-                        ) ?? item.title,
+                          item.metadata?.title,
+                        ) ?? item.metadata?.title,
                       },
                     }),
                     headers: {
@@ -345,8 +345,8 @@ export class AppRoot extends LitElement {
                         ...item.metadata,
                         subtitle: prompt(
                           "Enter the updated subtitle",
-                          item.subtitle,
-                        ) ?? item.subtitle,
+                          item.metadata?.subtitle,
+                        ) ?? item.metadata?.subtitle,
                       },
                     }),
                     headers: {

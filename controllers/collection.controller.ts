@@ -30,7 +30,6 @@ export class CollectionController {
 
   @Get()
   async getCollectionList() {
-    console.log(this.collectionService);
     return await this.collectionService.getCollectionList();
   }
 
