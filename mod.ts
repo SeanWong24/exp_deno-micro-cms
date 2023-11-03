@@ -35,7 +35,7 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
     index: wwwIndexPath,
   };
   app.use(
-    /^\/(?!api)/,
+    /^\/(?!api|admin)/,
     new SpaBuilder(wwwConfig),
   );
 
@@ -68,5 +68,6 @@ async function initializeDB() {
 }
 
 if (import.meta.main) {
+  const f = await Deno.open('./www/index.html')
   await startApp();
 }
