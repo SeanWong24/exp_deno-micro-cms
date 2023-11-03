@@ -10,43 +10,43 @@ export type Timestamps = {
   timeModified: Date;
 };
 
-export type CollectionItemCommon = {
+export type DocumentItemCommon = {
   type?: string;
   metadata?: unknown;
 };
 
-export type CollectionItemSummary = Timestamps & CollectionItemCommon;
+export type DocumentItemSummary = Timestamps & DocumentItemCommon;
 
-export type CollectionItem = CollectionItemCommon & {
+export type DocumentItem = DocumentItemCommon & {
   content?: string;
 };
 
-export type CollectionItemFull = CollectionItemSummary & CollectionItem;
+export type DocumentItemFull = DocumentItemSummary & DocumentItem;
 
 // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
 // @Singleton()
-export class CollectionService extends CollectionServiceBase<
-  CollectionItemFull,
-  CollectionItem,
-  CollectionItemSummary
+export class DocumentService extends CollectionServiceBase<
+  DocumentItemFull,
+  DocumentItem,
+  DocumentItemSummary
 > {
-  DB_NAME_SPACE = DBNamespaces.APP_COLLECTION;
+  DB_NAME_SPACE = DBNamespaces.APP_DOCUMENT;
 
   protected override obtainCollectionItemSummary(
-    item: CollectionItemFull,
+    item: DocumentItemFull,
   ) {
     return {
       type: item.type,
       metadata: item.metadata,
       timeCreated: item.timeCreated,
       timeModified: item.timeModified,
-    } as CollectionItemSummary;
+    } as DocumentItemSummary;
   }
 
   override async createNewItem(
     collectionId: string,
     itemId: string,
-    collectionItem?: CollectionItem,
+    collectionItem?: DocumentItem,
   ) {
     return await super.createNewItem(
       collectionId,
@@ -59,7 +59,7 @@ export class CollectionService extends CollectionServiceBase<
   override async updateItem(
     collectionId: string,
     itemId: string,
-    collectionItem?: CollectionItem,
+    collectionItem?: DocumentItem,
   ) {
     const oldItem = await this._getItemValue(collectionId, itemId);
     return await super.updateItem(
@@ -73,7 +73,7 @@ export class CollectionService extends CollectionServiceBase<
   override async updatePartialItem(
     collectionId: string,
     itemId: string,
-    collectionItem?: Partial<CollectionItem>,
+    collectionItem?: Partial<DocumentItem>,
   ) {
     const oldItem = await this._getItemValue(collectionId, itemId);
     return await super.updatePartialItem(
@@ -85,7 +85,7 @@ export class CollectionService extends CollectionServiceBase<
   }
 
   #fillCollectionItemWithTimestamps(
-    item: CollectionItem,
+    item: DocumentItem,
     oldItem?: { timeCreated?: Date },
   ) {
     const now = new Date();
@@ -97,6 +97,6 @@ export class CollectionService extends CollectionServiceBase<
 
 // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
 SERVICE_HOLDER.set(
-  CollectionService,
-  new CollectionService(SERVICE_HOLDER.get(DBService)),
+  DocumentService,
+  new DocumentService(SERVICE_HOLDER.get(DBService)),
 );

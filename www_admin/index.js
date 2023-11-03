@@ -5,9 +5,9 @@ export class AppRoot extends LitElement {
 
   static properties = {
     generalItemKeys: { state: true },
-    collections: { state: true },
-    selectedCollectionId: { state: true },
-    collectionItems: { state: true },
+    documentCollections: { state: true },
+    selectedDocumentCollectionId: { state: true },
+    documentCollectionItems: { state: true },
     assetCollections: { state: true },
     selectedAssetCollectionId: { state: true },
     assetCollectionItems: { state: true },
@@ -15,8 +15,8 @@ export class AppRoot extends LitElement {
 
   async firstUpdated() {
     await this.#updateGeneralItems();
-    await this.#updateCollections();
-    await this.#updateCollectionItems();
+    await this.#updateDocumentCollections();
+    await this.#updateDocumentCollectionItems();
     await this.#updateAssetCollections();
     await this.#updateAssetCollectionItems();
   }
@@ -31,9 +31,9 @@ export class AppRoot extends LitElement {
       <hr />
       ${this.#renderGeneralItems()}
       <hr />
-      ${this.#renderCollections()}
+      ${this.#renderDocumentCollections()}
       <hr />
-      ${this.#renderCollectionItems()}
+      ${this.#renderDocumentCollectionItems()}
       <hr />
       ${this.#renderAssetCollections()}
       <hr />
@@ -61,23 +61,23 @@ export class AppRoot extends LitElement {
     );
   }
 
-  async #updateCollections() {
-    this.collections = await fetch("/api/collection").then((response) =>
+  async #updateDocumentCollections() {
+    this.documentCollections = await fetch("/api/document").then((response) =>
       response.json()
     );
   }
 
-  async #updateSelectedCollection(collection) {
-    this.selectedCollectionId = collection;
-    await this.#updateCollectionItems();
+  async #updateSelectedDocumentCollection(collection) {
+    this.selectedDocumentCollectionId = collection;
+    await this.#updateDocumentCollectionItems();
   }
 
-  async #updateCollectionItems() {
-    if (!this.selectedCollectionId) return;
+  async #updateDocumentCollectionItems() {
+    if (!this.selectedDocumentCollectionId) return;
     const { items } = await fetch(
-      `/api/collection/${this.selectedCollectionId}`,
+      `/api/document/${this.selectedDocumentCollectionId}`,
     ).then((response) => response.json());
-    this.collectionItems = items;
+    this.documentCollectionItems = items;
   }
 
   async #updateAssetCollections() {
@@ -188,12 +188,12 @@ export class AppRoot extends LitElement {
     `;
   }
 
-  #renderCollections() {
+  #renderDocumentCollections() {
     return html`
-      <h2>Collections</h2>
+      <h2>Document Collections</h2>
       <ul>
         ${
-      this.collections?.map(
+      this.documentCollections?.map(
         (collection) =>
           html`
               <li>
@@ -201,7 +201,7 @@ export class AppRoot extends LitElement {
                 <button
                   @click=${async () => {
             const { metadata } = await fetch(
-              `/api/collection/${collection.id}`,
+              `/api/document/${collection.id}`,
             ).then((response) => response.json());
             alert(JSON.stringify(metadata));
           }}
@@ -214,9 +214,9 @@ export class AppRoot extends LitElement {
               await this.#authenticate();
             }
             const { metadata } = await fetch(
-              `/api/collection/${collection.id}`,
+              `/api/document/${collection.id}`,
             ).then((response) => response.json());
-            await fetch(`/api/collection/${collection.id}`, {
+            await fetch(`/api/document/${collection.id}`, {
               method: "PUT",
               body: prompt(
                 "Enter the metadata (as JSON)",
@@ -228,7 +228,7 @@ export class AppRoot extends LitElement {
               },
               credentials: "include",
             });
-            this.#updateCollections();
+            this.#updateDocumentCollections();
           }}
                 >
                   Update metadata
@@ -239,13 +239,13 @@ export class AppRoot extends LitElement {
               await this.#authenticate();
             }
             await fetch(
-              `/api/collection/${collection.id}?newName=${
+              `/api/document/${collection.id}?newName=${
                 prompt("Enter a new collection name", collection.id) ||
                 collection.id
               }`,
               { method: "PUT", credentials: "include" },
             );
-            this.#updateCollections();
+            this.#updateDocumentCollections();
           }}
                 >
                   Rename
@@ -255,18 +255,18 @@ export class AppRoot extends LitElement {
             if (!(await this.#checkAuthenticationStatus())) {
               await this.#authenticate();
             }
-            await fetch(`/api/collection/${collection.id}`, {
+            await fetch(`/api/document/${collection.id}`, {
               method: "DELETE",
               credentials: "include",
             });
-            this.#updateCollections();
+            this.#updateDocumentCollections();
           }}
                 >
                   Delete
                 </button>
                 <button
                   @click=${async () => {
-            await this.#updateSelectedCollection(collection.id);
+            await this.#updateSelectedDocumentCollection(collection.id);
           }}
                 >
                   List items
@@ -282,7 +282,7 @@ export class AppRoot extends LitElement {
         await this.#authenticate();
       }
       await fetch(
-        `/api/collection/${
+        `/api/document/${
           prompt("Enter the name", new Date().getTime().toString()) ||
           new Date().getTime().toString()
         }`,
@@ -295,7 +295,7 @@ export class AppRoot extends LitElement {
           credentials: "include",
         },
       );
-      this.#updateCollections();
+      this.#updateDocumentCollections();
     }}
       >
         Add new
@@ -303,15 +303,15 @@ export class AppRoot extends LitElement {
     `;
   }
 
-  #renderCollectionItems() {
+  #renderDocumentCollectionItems() {
     return html`
-      <h2>Collection Items</h2>
+      <h2>Document Items</h2>
       ${
-      this.selectedCollectionId != null
+      this.selectedDocumentCollectionId != null
         ? html`
             <ul>
               ${
-          this.collectionItems?.map(
+          this.documentCollectionItems?.map(
             (item) =>
               html`
                     <li>
@@ -323,7 +323,7 @@ export class AppRoot extends LitElement {
                       <button
                         @click=${async () => {
                 const { content } = await fetch(
-                  `/api/collection/${item.collectionId}/${item.id}`,
+                  `/api/document/${item.collectionId}/${item.id}`,
                 ).then((response) => response.json());
                 alert(content);
               }}
@@ -336,7 +336,7 @@ export class AppRoot extends LitElement {
                   await this.#authenticate();
                 }
                 await fetch(
-                  `/api/collection/${item.collectionId}/${item.id}`,
+                  `/api/document/${item.collectionId}/${item.id}`,
                   {
                     method: "PATCH",
                     body: JSON.stringify({
@@ -354,7 +354,7 @@ export class AppRoot extends LitElement {
                     credentials: "include",
                   },
                 );
-                this.#updateCollectionItems();
+                this.#updateDocumentCollectionItems();
               }}
                       >
                         Update title
@@ -365,7 +365,7 @@ export class AppRoot extends LitElement {
                   await this.#authenticate();
                 }
                 await fetch(
-                  `/api/collection/${item.collectionId}/${item.id}`,
+                  `/api/document/${item.collectionId}/${item.id}`,
                   {
                     method: "PATCH",
                     body: JSON.stringify({
@@ -383,7 +383,7 @@ export class AppRoot extends LitElement {
                     credentials: "include",
                   },
                 );
-                this.#updateCollectionItems();
+                this.#updateDocumentCollectionItems();
               }}
                       >
                         Update subtitle
@@ -394,10 +394,10 @@ export class AppRoot extends LitElement {
                   await this.#authenticate();
                 }
                 const itemWithContent = await fetch(
-                  `/api/collection/${item.collectionId}/${item.id}`,
+                  `/api/document/${item.collectionId}/${item.id}`,
                 ).then((response) => response.json());
                 await fetch(
-                  `/api/collection/${item.collectionId}/${item.id}`,
+                  `/api/document/${item.collectionId}/${item.id}`,
                   {
                     method: "PATCH",
                     body: JSON.stringify({
@@ -412,7 +412,7 @@ export class AppRoot extends LitElement {
                     credentials: "include",
                   },
                 );
-                this.#updateCollectionItems();
+                this.#updateDocumentCollectionItems();
               }}
                       >
                         Update content
@@ -423,10 +423,10 @@ export class AppRoot extends LitElement {
                   await this.#authenticate();
                 }
                 await fetch(
-                  `/api/collection/${item.collectionId}/${item.id}`,
+                  `/api/document/${item.collectionId}/${item.id}`,
                   { method: "DELETE", credentials: "include" },
                 );
-                this.#updateCollectionItems();
+                this.#updateDocumentCollectionItems();
               }}
                       >
                         Delete
@@ -441,9 +441,9 @@ export class AppRoot extends LitElement {
           if (!(await this.#checkAuthenticationStatus())) {
             await this.#authenticate();
           }
-          if (!this.selectedCollectionId) return;
+          if (!this.selectedDocumentCollectionId) return;
           await fetch(
-            `/api/collection/${this.selectedCollectionId}/$`,
+            `/api/document/${this.selectedDocumentCollectionId}/$`,
             {
               method: "POST",
               body: JSON.stringify({
@@ -460,7 +460,7 @@ export class AppRoot extends LitElement {
               credentials: "include",
             },
           );
-          this.#updateCollectionItems();
+          this.#updateDocumentCollectionItems();
         }}
             >
               Add new
@@ -578,7 +578,7 @@ export class AppRoot extends LitElement {
           credentials: "include",
         },
       );
-      this.#updateCollections();
+      this.#updateDocumentCollections();
     }}
       >
         Add new
@@ -589,7 +589,7 @@ export class AppRoot extends LitElement {
   #renderAssetCollectionItems() {
     return html`
       <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-      <h2>Collection Items</h2>
+      <h2>Asset Items</h2>
       ${
       this.selectedAssetCollectionId != null
         ? html`
@@ -601,7 +601,7 @@ export class AppRoot extends LitElement {
                     <li>
                       <p>${item.id}</p>
                       <p>${item.type}</p>
-                      <i>${item.size} Bytes</i>
+                      <i>${item.size} bytes</i>
                       <br/>
                       <a href=${`/api/asset/${item.collectionId}/${item.id}`}>Download<a>
                       <form 

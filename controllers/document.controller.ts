@@ -13,29 +13,29 @@ import {
 import { AuthHook } from "../hooks/auth.hook.ts";
 import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
 import {
-  type CollectionItem,
-  CollectionService,
-} from "../services/collection.service.ts";
+  type DocumentItem,
+  DocumentService,
+} from "../services/document.service.ts";
 import { ulid } from "../deps/ulid.ts";
 import { SERVICE_HOLDER } from "../service-holder.ts";
 
 @UseHook(CatchErrorsHook)
-@Controller("/collection")
-export class CollectionController {
+@Controller("/document")
+export class DocumentController {
   // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
-  // constructor(private collectionService: CollectionService) {}
-  collectionService = SERVICE_HOLDER.get(
-    CollectionService,
+  // constructor(private documentService: DocumentService) {}
+  documentService = SERVICE_HOLDER.get(
+    DocumentService,
   );
 
   @Get()
   async getCollectionList() {
-    return await this.collectionService.getCollectionList();
+    return await this.documentService.getCollectionList();
   }
 
   @Get("/:collection")
   async getCollection(@Param("collection") id: string) {
-    return await this.collectionService.getCollection(id);
+    return await this.documentService.getCollection(id);
   }
 
   @UseHook(AuthHook)
@@ -44,7 +44,7 @@ export class CollectionController {
     @Param("collection") id: string,
     @Body() metadata: unknown,
   ) {
-    return await this.collectionService.createNewCollection(id, metadata);
+    return await this.documentService.createNewCollection(id, metadata);
   }
 
   @UseHook(AuthHook)
@@ -55,10 +55,10 @@ export class CollectionController {
     @Body() metadata: unknown,
   ) {
     if (newName) {
-      await this.collectionService.renameCollection(id, newName);
+      await this.documentService.renameCollection(id, newName);
     }
     if (!metadata) return;
-    return this.collectionService.updateCollectionMetadata(
+    return this.documentService.updateCollectionMetadata(
       newName || id,
       metadata,
     );
@@ -72,10 +72,10 @@ export class CollectionController {
     @Body() metadata: unknown,
   ) {
     if (newName) {
-      await this.collectionService.renameCollection(id, newName);
+      await this.documentService.renameCollection(id, newName);
     }
     if (!metadata) return;
-    return this.collectionService.updatePartialCollectionMetadata(
+    return this.documentService.updatePartialCollectionMetadata(
       newName || id,
       metadata,
     );
@@ -84,7 +84,7 @@ export class CollectionController {
   @UseHook(AuthHook)
   @Delete("/:collection")
   async deleteCollection(@Param("collection") id: string) {
-    return await this.collectionService.deleteCollection(id);
+    return await this.documentService.deleteCollection(id);
   }
 
   @Get("/:collection/:item")
@@ -92,7 +92,7 @@ export class CollectionController {
     @Param("collection") collectionId: string,
     @Param("item") itemId: string,
   ) {
-    return await this.collectionService.getItem(collectionId, itemId);
+    return await this.documentService.getItem(collectionId, itemId);
   }
 
   @UseHook(AuthHook)
@@ -100,10 +100,10 @@ export class CollectionController {
   async createNewItemWithId(
     @Param("collection") collectionId: string,
     @Param("item") itemId: string,
-    @Body() collectionItem: CollectionItem,
+    @Body() collectionItem: DocumentItem,
   ) {
     if (itemId === "$") itemId = ulid();
-    return await this.collectionService.createNewItem(
+    return await this.documentService.createNewItem(
       collectionId,
       itemId,
       collectionItem,
@@ -115,9 +115,9 @@ export class CollectionController {
   async updateItem(
     @Param("collection") collectionId: string,
     @Param("item") itemId: string,
-    @Body() collectionItem: CollectionItem,
+    @Body() collectionItem: DocumentItem,
   ) {
-    return await this.collectionService.updateItem(
+    return await this.documentService.updateItem(
       collectionId,
       itemId,
       collectionItem,
@@ -129,9 +129,9 @@ export class CollectionController {
   async updatePartialItem(
     @Param("collection") collectionId: string,
     @Param("item") itemId: string,
-    @Body() collectionItem: Partial<CollectionItem>,
+    @Body() collectionItem: Partial<DocumentItem>,
   ) {
-    return await this.collectionService.updatePartialItem(
+    return await this.documentService.updatePartialItem(
       collectionId,
       itemId,
       collectionItem,
@@ -144,7 +144,7 @@ export class CollectionController {
     @Param("collection") collectionId: string,
     @Param("item") itemId: string,
   ) {
-    await this.collectionService.deleteItem(collectionId, itemId);
+    await this.documentService.deleteItem(collectionId, itemId);
     return "";
   }
 }
