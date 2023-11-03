@@ -5,6 +5,7 @@ import { APP_CONFIG, AppConfig } from "./utils/app-config.ts";
 import { DBService } from "./services/db.service.ts";
 import * as path from "./deps/std/path.ts";
 import { SERVICE_HOLDER } from "./service-holder.ts";
+import { Asset, AssetHelper } from "./utils/asset.ts";
 
 export const settings: AppSettings = {
   areas: [HomeArea, CoreArea],

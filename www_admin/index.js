@@ -8,12 +8,17 @@ export class AppRoot extends LitElement {
     collections: { state: true },
     selectedCollectionId: { state: true },
     collectionItems: { state: true },
+    assetCollections: { state: true },
+    selectedAssetCollectionId: { state: true },
+    assetCollectionItems: { state: true },
   };
 
   async firstUpdated() {
     await this.#updateGeneralItems();
     await this.#updateCollections();
     await this.#updateCollectionItems();
+    await this.#updateAssetCollections();
+    await this.#updateAssetCollectionItems();
   }
 
   constructor() {
@@ -29,6 +34,10 @@ export class AppRoot extends LitElement {
       ${this.#renderCollections()}
       <hr />
       ${this.#renderCollectionItems()}
+      <hr />
+      ${this.#renderAssetCollections()}
+      <hr />
+      ${this.#renderAssetCollectionItems()}
     `;
   }
 
@@ -69,6 +78,25 @@ export class AppRoot extends LitElement {
       `/api/collection/${this.selectedCollectionId}`,
     ).then((response) => response.json());
     this.collectionItems = items;
+  }
+
+  async #updateAssetCollections() {
+    this.assetCollections = await fetch("/api/asset").then((response) =>
+      response.json()
+    );
+  }
+
+  async #updateSelectedAssetCollection(collection) {
+    this.selectedAssetCollectionId = collection;
+    await this.#updateAssetCollectionItems();
+  }
+
+  async #updateAssetCollectionItems() {
+    if (!this.selectedAssetCollectionId) return;
+    const { items } = await fetch(
+      `/api/asset/${this.selectedAssetCollectionId}`,
+    ).then((response) => response.json());
+    this.assetCollectionItems = items;
   }
 
   #renderGeneralItems() {
@@ -439,6 +467,196 @@ export class AppRoot extends LitElement {
             </button>
           `
         : 'Click "List items" from the collection section.'
+    }
+    `;
+  }
+
+  #renderAssetCollections() {
+    return html`
+      <h2>Asset Collections</h2>
+      <ul>
+        ${
+      this.assetCollections?.map(
+        (collection) =>
+          html`
+              <li>
+                ${collection.id}
+                <button
+                  @click=${async () => {
+            const { metadata } = await fetch(
+              `/api/asset/${collection.id}`,
+            ).then((response) => response.json());
+            alert(JSON.stringify(metadata));
+          }}
+                >
+                  Get metadata
+                </button>
+                <button
+                  @click=${async () => {
+            if (!(await this.#checkAuthenticationStatus())) {
+              await this.#authenticate();
+            }
+            const { metadata } = await fetch(
+              `/api/asset/${collection.id}`,
+            ).then((response) => response.json());
+            await fetch(`/api/asset/${collection.id}`, {
+              method: "PUT",
+              body: prompt(
+                "Enter the metadata (as JSON)",
+                JSON.stringify(metadata),
+              ) ??
+                JSON.stringify(metadata),
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            });
+            this.#updateAssetCollections();
+          }}
+                >
+                  Update metadata
+                </button>
+                <button
+                  @click=${async () => {
+            if (!(await this.#checkAuthenticationStatus())) {
+              await this.#authenticate();
+            }
+            await fetch(
+              `/api/asset/${collection.id}?newName=${
+                prompt("Enter a new asset name", collection.id) ||
+                collection.id
+              }`,
+              { method: "PUT", credentials: "include" },
+            );
+            this.#updateAssetCollections();
+          }}
+                >
+                  Rename
+                </button>
+                <button
+                  @click=${async () => {
+            if (!(await this.#checkAuthenticationStatus())) {
+              await this.#authenticate();
+            }
+            await fetch(`/api/asset/${collection.id}`, {
+              method: "DELETE",
+              credentials: "include",
+            });
+            this.#updateAssetCollections();
+          }}
+                >
+                  Delete
+                </button>
+                <button
+                  @click=${async () => {
+            await this.#updateSelectedAssetCollection(collection.id);
+          }}
+                >
+                  List items
+                </button>
+              </li>
+            `,
+      )
+    }
+      </ul>
+      <button
+        @click=${async () => {
+      if (!(await this.#checkAuthenticationStatus())) {
+        await this.#authenticate();
+      }
+      await fetch(
+        `/api/asset/${
+          prompt("Enter the name", new Date().getTime().toString()) ||
+          new Date().getTime().toString()
+        }`,
+        {
+          method: "POST",
+          body: prompt("Enter the metadata (as JSON)", "{}") ?? "{}",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        },
+      );
+      this.#updateCollections();
+    }}
+      >
+        Add new
+      </button>
+    `;
+  }
+
+  #renderAssetCollectionItems() {
+    return html`
+      <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+      <h2>Collection Items</h2>
+      ${
+      this.selectedAssetCollectionId != null
+        ? html`
+            <ul>
+              ${
+          this.assetCollectionItems?.map(
+            (item) =>
+              html`
+                    <li>
+                      <p>${item.id}</p>
+                      <p>${item.type}</p>
+                      <i>${item.size} Bytes</i>
+                      <br/>
+                      <a href=${`/api/asset/${item.collectionId}/${item.id}`}>Download<a>
+                      <form 
+                        action=${`/api/asset/${item.collectionId}/${item.id}`}
+                        method="put" 
+                        enctype="multipart/form-data"
+                        target="dummyframe"
+                        @submit=${() => {
+                setTimeout(() => {
+                  if (alert("Needs to reload the window.")) {
+                    location.reload();
+                  }
+                }, 100);
+              }}
+                      >
+                        <input type="file" name="file"/>
+                        <button type="submit">Re-upload</button>
+                      </form>
+                      <button
+                        @click=${async () => {
+                if (!(await this.#checkAuthenticationStatus())) {
+                  await this.#authenticate();
+                }
+                await fetch(
+                  `/api/asset/${item.collectionId}/${item.id}`,
+                  { method: "DELETE", credentials: "include" },
+                );
+                this.#updateAssetCollectionItems();
+              }}
+                      >
+                        Delete
+                      </button>
+                    </li>
+                  `,
+          )
+        }
+            </ul>
+            <form 
+              action=${`/api/asset/${this.selectedAssetCollectionId}/$`}
+              method="post" 
+              enctype="multipart/form-data"
+              target="dummyframe"
+              @submit=${() => {
+          setTimeout(() => {
+            if (alert("Needs to reload the window.")) {
+              location.reload();
+            }
+          }, 100);
+        }}
+            >
+              <input type="file" name="file"/>
+              <button type="submit">Upload new</button>
+            </form>
+          `
+        : 'Click "List items" from the asset collection section.'
     }
     `;
   }

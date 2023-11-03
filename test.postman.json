@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "20db9e56-fee2-41a4-be2f-094559ae9bde",
+        "_postman_id": "2747111d-7fd4-4700-a60e-5b417a6f9ac9",
         "name": "test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
@@ -468,7 +468,7 @@
             }
         },
         {
-            "name": "Update part of a document item",
+            "name": "Update part of a collection item",
             "request": {
                 "method": "PATCH",
                 "url": {
@@ -503,7 +503,7 @@
             }
         },
         {
-            "name": "Update a document item",
+            "name": "Update a collection item",
             "request": {
                 "method": "PUT",
                 "url": {
@@ -569,6 +569,294 @@
                         }
                     },
                     "raw": "{\n  \"title\": \"Test Article\",\n  \"subtitle\": \"Subtitle...\",\n  \"content\": \"Hello World!!!\",\n  \"type\": \"text/plain\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Create an asset collection",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"description\": \"It is awesome!\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Update part of an asset collection",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"description\": \"It is pretty awesome!\",\n  \"something\": \"else\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Update a asset collection",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"foo\": \"bar\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Get asset collection list",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset",
+                    "path": [
+                        "api",
+                        "asset"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Get an asset collection",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Delete an asset collection",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Create an asset item",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group/$",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group",
+                        "$"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "file",
+                            "src": "/home/coder/workspace/deno.jsonc",
+                            "type": "file"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Update an asset item",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group/foo.bar",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group",
+                        "foo.bar"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "file",
+                            "src": "/home/coder/workspace/deno.lock",
+                            "type": "file"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get an asset item",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group/foo.bar",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group",
+                        "foo.bar"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Delete an asset item",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group/bar-item",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group",
+                        "bar-item"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                }
+            }
+        },
+        {
+            "name": "Create an asset item (override name)",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:8000/api/asset/foo-group/foo.bar",
+                    "path": [
+                        "api",
+                        "asset",
+                        "foo-group",
+                        "foo.bar"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "file",
+                            "src": "/home/coder/workspace/deno.lock",
+                            "type": "file"
+                        }
+                    ]
                 }
             }
         }
