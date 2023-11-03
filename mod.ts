@@ -68,6 +68,5 @@ async function initializeDB() {
 }
 
 if (import.meta.main) {
-  const f = await Deno.open('./www/index.html')
   await startApp();
 }
