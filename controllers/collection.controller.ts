@@ -102,7 +102,7 @@ export class CollectionController {
     @Param("item") itemId: string,
     @Body() collectionItem: CollectionItem,
   ) {
-    if (itemId == "$") itemId = ulid();
+    if (itemId === "$") itemId = ulid();
     return await this.collectionService.createNewItem(
       collectionId,
       itemId,
