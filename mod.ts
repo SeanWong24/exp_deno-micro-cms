@@ -35,7 +35,7 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
     index: wwwIndexPath,
   };
   app.use(
-    /^\//,
+    /^\/(?!api)/,
     new SpaBuilder(wwwConfig),
   );
 
