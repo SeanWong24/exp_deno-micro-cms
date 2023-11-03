@@ -1,4 +1,4 @@
-import { AlosaurOpenApiBuilder } from "./deps/alosaur.ts";
+import { AlosaurOpenApiBuilder } from "./deps/alosaur-openapi.ts";
 import { settings } from "./mod.ts";
 
 AlosaurOpenApiBuilder.create(settings)
