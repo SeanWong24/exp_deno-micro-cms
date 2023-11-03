@@ -66,3 +66,7 @@ async function initializeDB() {
     init: APP_CONFIG.DB_INIT,
   });
 }
+
+if (import.meta.main) {
+  await startApp();
+}
