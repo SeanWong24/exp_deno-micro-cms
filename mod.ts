@@ -6,21 +6,27 @@ import { DBService } from "./services/db.service.ts";
 import * as path from "./deps/std/path.ts";
 import { SERVICE_HOLDER } from "./service-holder.ts";
 
+const API_BASE_ROUTE = "/api";
+
+APP_CONFIG.applyEnv();
+
 export const settings: AppSettings = {
   areas: [HomeArea, CoreArea],
-  logging: APP_CONFIG.DEV ? true : false,
 };
 
 export async function startApp(appConfig?: Partial<AppConfig>) {
   if (appConfig) {
-    Object.assign(APP_CONFIG, appConfig);
+    APP_CONFIG.applyPartial(appConfig);
   }
 
   await initializeDB();
 
-  const app = new App(settings);
+  const app = new App({
+    ...settings,
+    logging: Boolean(APP_CONFIG.logging),
+  });
 
-  if (APP_CONFIG.DEV) {
+  if (APP_CONFIG.cors) {
     app.useCors(
       new CorsBuilder()
         .AllowAnyOrigin()
@@ -29,44 +35,37 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
     );
   }
 
-  const wwwIndexPath = APP_CONFIG.FE_INDEX_PATH;
-  const wwwConfig = {
-    root: APP_CONFIG.FE_ROOT_PATH,
-    index: wwwIndexPath,
-  };
-  app.use(
-    /^\/(?!api|admin)/,
-    new SpaBuilder(wwwConfig),
-  );
-
-  const adminUIIndexPath = APP_CONFIG.ADMIN_INDEX_PATH;
-  const adminUIConfig = {
-    root: APP_CONFIG.ADMIN_ROOT_PATH,
-    index: adminUIIndexPath,
-    baseRoute: "/admin/",
-  };
-  app.use(
-    /^\/admin/,
-    new SpaBuilder(adminUIConfig),
-  );
+  APP_CONFIG.resolvedFrontendConfigs?.forEach((
+    { baseRoute, rootDirectory, indexPath },
+  ) => {
+    app.use(
+      new RegExp(`^(?!${API_BASE_ROUTE})${baseRoute}`),
+      new SpaBuilder({
+        baseRoute,
+        root: rootDirectory,
+        index: indexPath,
+      }),
+    );
+  });
 
   app.listen();
 }
 
 async function initializeDB() {
-  if (APP_CONFIG.DB_PATH) {
-    const directoryPath = path.dirname(APP_CONFIG.DB_PATH);
+  if (APP_CONFIG.dbPath) {
+    const directoryPath = path.dirname(APP_CONFIG.dbPath);
     await Deno.mkdir(directoryPath, { recursive: true });
   }
   // TODO use back TSyringe when decorator metadata is supported in Deno Deploy
   // const dbService = container.resolve(DBService);
   const dbService = SERVICE_HOLDER.get(DBService);
   await dbService.initialize({
-    path: APP_CONFIG.DB_PATH,
-    init: APP_CONFIG.DB_INIT,
+    path: APP_CONFIG.dbPath,
+    init: APP_CONFIG.dbInitCallback,
   });
 }
 
 if (import.meta.main) {
+  APP_CONFIG.applyFlags(Deno.args);
   await startApp();
 }

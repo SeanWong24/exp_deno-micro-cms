@@ -9,6 +9,7 @@ import {
 import { deleteCookie, setCookie } from "../deps/std/http.ts";
 import { AuthHook } from "../hooks/auth.hook.ts";
 import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
+import { APP_CONFIG } from "../utils/app-config.ts";
 import { NotAuthenticatedError } from "../utils/errors.ts";
 
 @UseHook(CatchErrorsHook)
@@ -22,8 +23,7 @@ export class AuthController {
 
   @Post("/sign-in")
   signIn(@QueryParam("passcode") passcode: string, @Res() response: Response) {
-    const truthPasscode = Deno.env.get("PASSCODE");
-    if (truthPasscode !== passcode) {
+    if (APP_CONFIG.passcode !== passcode) {
       throw new NotAuthenticatedError("Invalid passcode.");
     }
     setCookie(response.headers, {

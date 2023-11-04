@@ -1,9 +1,9 @@
 {
   "tasks": {
-    "dev": "DEV=1 PASSCODE=test DB_PATH=./temp/db deno run -A --unstable --watch mod.ts",
-    "dev:debugger": "DEV=1 PASSCODE=test DB_PATH=./temp/db deno run -A --unstable --watch --inspect-wait mod.ts",
-    "start": "deno run --allow-net --allow-env --unstable --watch mod.ts",
+    "dev": "deno run --env=.dev.env -A --unstable-kv --watch mod.ts",
+    "dev:debugger": "deno run --env=.dev.env -A --unstable-kv --watch --inspect-wait mod.ts",
+    "start": "deno run --allow-net --allow-env --unstable-kv --watch mod.ts",
     "docs:generate": "deno run --allow-env --allow-read --allow-write openapi.ts"
   },
-  "exclude": ["/www", "/admin-ui"]
+  "exclude": []
 }

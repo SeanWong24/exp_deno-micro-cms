@@ -1,20 +1,70 @@
+import { parse as parseFlags } from "../deps/std/flags.ts";
+
 export type DBInitCallback = (db: Deno.Kv) => Promise<void>;
 
-export type AppConfig = {
-  DEV?: string;
-  FE_ROOT_PATH: string;
-  FE_INDEX_PATH?: string;
-  ADMIN_ROOT_PATH: string;
-  ADMIN_INDEX_PATH?: string;
-  DB_PATH?: string;
-  DB_INIT?: DBInitCallback;
+class StringBasedConfig {
+  logging?: string | boolean;
+  cors?: string | boolean;
+  passcode?: string;
+  frontends?: string;
+  dbPath?: string;
+}
+
+const ENV_NAME_DICT: Record<keyof StringBasedConfig, string> = {
+  logging: "LOGGING",
+  cors: "CORS",
+  passcode: "PASSCODE",
+  frontends: "FRONTENDS",
+  dbPath: "DB_PATH",
 };
 
-export const APP_CONFIG: AppConfig = {
-  DEV: Deno.env.get("DEV"),
-  FE_ROOT_PATH: Deno.env.get("FE_ROOT_PATH") || `${Deno.cwd()}/www`,
-  FE_INDEX_PATH: Deno.env.get("FE_INDEX_PATH") || "index.html",
-  ADMIN_ROOT_PATH: Deno.env.get("ADMIN_ROOT_PATH") || `${Deno.cwd()}/www_admin`,
-  ADMIN_INDEX_PATH: Deno.env.get("ADMIN_INDEX_PATH") || "index.html",
-  DB_PATH: Deno.env.get("DB_PATH"),
+const FLAG_NAME_DICT: Record<keyof StringBasedConfig, string> = {
+  logging: "logging",
+  cors: "cors",
+  passcode: "passcode",
+  frontends: "frontends",
+  dbPath: "db-path",
 };
+
+export class AppConfig extends StringBasedConfig {
+  dbInitCallback?: DBInitCallback;
+
+  get resolvedFrontendConfigs() {
+    const configStrings = this.frontends?.split(",");
+    return configStrings?.map((configString) =>
+      this.#resolveFrontendConfigString(configString)
+    );
+  }
+
+  applyEnv() {
+    Object.keys(new StringBasedConfig()).forEach((key) => {
+      const propName = key as keyof StringBasedConfig;
+      const value = Deno.env.get(ENV_NAME_DICT[propName]);
+      if (value == null) return;
+      this[propName] = value;
+    });
+    return this;
+  }
+
+  applyFlags(flags: string[]) {
+    const flagDict = parseFlags(flags);
+    Object.keys(new StringBasedConfig()).forEach((key) => {
+      const propName = key as keyof StringBasedConfig;
+      const value = flagDict[FLAG_NAME_DICT[propName]];
+      if (value == null) return;
+      this[propName] = value;
+    });
+    return this;
+  }
+
+  applyPartial(config: Partial<AppConfig>) {
+    return Object.assign(this, config);
+  }
+
+  #resolveFrontendConfigString(configString: string) {
+    const [baseRoute, rootDirectory, indexPath] = configString.split(":");
+    return { baseRoute, rootDirectory, indexPath };
+  }
+}
+
+export const APP_CONFIG = new AppConfig();
