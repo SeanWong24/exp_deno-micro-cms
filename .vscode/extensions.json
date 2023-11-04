@@ -4,6 +4,7 @@
         "eamodio.gitlens",
         "rangav.vscode-thunder-client",
         "runem.lit-plugin",
-        "42crunch.vscode-openapi"
+        "42crunch.vscode-openapi",
+        "gruntfuggly.todo-tree"
     ]
 }
