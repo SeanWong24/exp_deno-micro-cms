@@ -8,6 +8,7 @@ class StringBasedConfig {
   passcode?: string;
   frontends?: string;
   dbPath?: string;
+  listenTo?: string;
 }
 
 const ENV_NAME_DICT: Record<keyof StringBasedConfig, string> = {
@@ -16,6 +17,7 @@ const ENV_NAME_DICT: Record<keyof StringBasedConfig, string> = {
   passcode: "PASSCODE",
   frontends: "FRONTENDS",
   dbPath: "DB_PATH",
+  listenTo: "LISTEN_TO",
 };
 
 const FLAG_NAME_DICT: Record<keyof StringBasedConfig, string> = {
@@ -24,6 +26,7 @@ const FLAG_NAME_DICT: Record<keyof StringBasedConfig, string> = {
   passcode: "passcode",
   frontends: "frontends",
   dbPath: "db-path",
+  listenTo: "listen-to",
 };
 
 export class AppConfig extends StringBasedConfig {

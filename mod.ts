@@ -48,7 +48,7 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
     );
   });
 
-  app.listen();
+  app.listen(APP_CONFIG.listenTo);
 }
 
 async function initializeDB() {
