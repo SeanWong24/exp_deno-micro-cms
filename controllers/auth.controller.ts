@@ -39,7 +39,11 @@ export class AuthController {
 
   @Post("/sign-out")
   signOut(@Res() response: Response) {
-    deleteCookie(response.headers, "authenticated", { path: "/" });
+    deleteCookie(response.headers, "authenticated", { 
+      path: "/",
+      sameSite: APP_CONFIG.cors ? 'None' : 'Lax',
+      secure: APP_CONFIG.cors ? true : undefined
+    });
     return "";
   }
 }
