@@ -31,7 +31,8 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
       new CorsBuilder()
         .AllowAnyOrigin()
         .AllowAnyMethod()
-        .AllowAnyHeader(),
+        .AllowAnyHeader()
+        .AllowCredentials(),
     );
   }
 
