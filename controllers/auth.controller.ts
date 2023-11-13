@@ -32,6 +32,7 @@ export class AuthController {
       path: "/",
       httpOnly: true,
       sameSite: APP_CONFIG.cors ? 'None' : 'Lax',
+      secure: APP_CONFIG.cors ? true : undefined
     });
     return "";
   }
