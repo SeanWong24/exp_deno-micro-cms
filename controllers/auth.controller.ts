@@ -31,6 +31,7 @@ export class AuthController {
       value: "1",
       path: "/",
       httpOnly: true,
+      sameSite: APP_CONFIG.cors ? 'None' : 'Lax',
     });
     return "";
   }
