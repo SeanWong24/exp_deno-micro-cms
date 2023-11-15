@@ -1,6 +1,7 @@
 import {
   AlosaurRequest,
   AlosaurResponse,
+  Content,
   Controller,
   Ctx,
   Get,
@@ -21,7 +22,7 @@ export class AuthController {
   @UseHook(AuthHook)
   @Get()
   check() {
-    return "";
+    return Content(true);
   }
 
   @Post("/sign-in")
@@ -40,7 +41,7 @@ export class AuthController {
       sameSite: APP_CONFIG.cors ? 'None' : 'Lax',
       secure: APP_CONFIG.cors ? true : undefined
     });
-    return "";
+    return Content(true);
   }
 
   @Post("/sign-out")
@@ -53,6 +54,6 @@ export class AuthController {
       sameSite: APP_CONFIG.cors ? 'None' : 'Lax',
       secure: APP_CONFIG.cors ? true : undefined
     } as object);
-    return "";
+    return Content(true);
   }
 }
