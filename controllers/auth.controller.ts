@@ -29,7 +29,6 @@ export class AuthController {
       value: "1",
       path: "/",
       httpOnly: true,
-      sameSite: APP_CONFIG.cors ? 'None' : 'Lax',
       secure: APP_CONFIG.cors ? true : undefined
     });
     return "";
@@ -39,8 +38,6 @@ export class AuthController {
   signOut(@Res() response: Response) {
     deleteCookie(response.headers, "authenticated", {
       path: "/",
-      sameSite: APP_CONFIG.cors ? 'None' : 'Lax',
-      secure: APP_CONFIG.cors ? true : undefined
     });
     return "";
   }
