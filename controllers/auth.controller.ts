@@ -8,11 +8,9 @@ import {
 } from "../deps/alosaur.ts";
 import { deleteCookie, setCookie } from "../deps/std/http.ts";
 import { AuthHook } from "../hooks/auth.hook.ts";
-import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
 import { APP_CONFIG } from "../utils/app-config.ts";
 import { NotAuthenticatedError } from "../utils/errors.ts";
 
-@UseHook(CatchErrorsHook)
 @Controller("/auth")
 export class AuthController {
   @UseHook(AuthHook)
@@ -39,7 +37,7 @@ export class AuthController {
 
   @Post("/sign-out")
   signOut(@Res() response: Response) {
-    deleteCookie(response.headers, "authenticated", { 
+    deleteCookie(response.headers, "authenticated", {
       path: "/",
       sameSite: APP_CONFIG.cors ? 'None' : 'Lax',
       secure: APP_CONFIG.cors ? true : undefined

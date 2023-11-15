@@ -12,13 +12,11 @@ import {
   UseHook,
 } from "../deps/alosaur.ts";
 import { AuthHook } from "../hooks/auth.hook.ts";
-import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
 import { SERVICE_HOLDER } from "../service-holder.ts";
 import { AssetService } from "../services/asset.service.ts";
 import { AssetHelper } from "../utils/asset.ts";
 import { Status } from "../deps/std/http.ts";
 
-@UseHook(CatchErrorsHook)
 @Controller("/asset")
 export class AssetController {
   // TODO use back TSyringe when decorator metadata is supported in Deno Deploy

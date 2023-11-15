@@ -11,7 +11,6 @@ import {
   UseHook,
 } from "../deps/alosaur.ts";
 import { AuthHook } from "../hooks/auth.hook.ts";
-import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
 import {
   type DocumentItem,
   DocumentService,
@@ -19,7 +18,6 @@ import {
 import { ulid } from "../deps/ulid.ts";
 import { SERVICE_HOLDER } from "../service-holder.ts";
 
-@UseHook(CatchErrorsHook)
 @Controller("/document")
 export class DocumentController {
   // TODO use back TSyringe when decorator metadata is supported in Deno Deploy

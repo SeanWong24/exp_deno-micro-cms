@@ -11,11 +11,9 @@ import {
   UseHook,
 } from "../deps/alosaur.ts";
 import { AuthHook } from "../hooks/auth.hook.ts";
-import { CatchErrorsHook } from "../hooks/catch-errors.hook.ts";
 import { SERVICE_HOLDER } from "../service-holder.ts";
 import { GeneralInfoService } from "../services/general-info.service.ts";
 
-@UseHook(CatchErrorsHook)
 @Controller("/general")
 export class GeneralInfoController {
   // TODO use back TSyringe when decorator metadata is supported in Deno Deploy

@@ -1,10 +1,12 @@
-import { App, AppSettings, CorsBuilder, SpaBuilder } from "./deps/alosaur.ts";
+import { App, AppSettings, Content, CorsBuilder, HttpContext, HttpError, SpaBuilder } from "./deps/alosaur.ts";
 import { HomeArea } from "./areas/home.area.ts";
 import { CoreArea } from "./areas/core.area.ts";
 import { APP_CONFIG, AppConfig } from "./utils/app-config.ts";
 import { DBService } from "./services/db.service.ts";
 import * as path from "./deps/std/path.ts";
 import { SERVICE_HOLDER } from "./service-holder.ts";
+import { Status } from "./deps/std/http.ts";
+import { CustomError } from "./utils/errors.ts";
 
 const API_BASE_ROUTE = "/api";
 
@@ -47,6 +49,17 @@ export async function startApp(appConfig?: Partial<AppConfig>) {
         index: indexPath,
       }),
     );
+  });
+
+  app.error((context: HttpContext, error: Error) => {
+    if (error instanceof HttpError) {
+      context.response.result = Content(error.message, error.httpCode);
+    } else if (error instanceof CustomError) {
+      context.response.result = Content(error.message, error.httpCode);
+    } else if (error instanceof Error) {
+      context.response.result = Content(error.message ?? '', Status.InternalServerError);
+    }
+    context.response.setImmediately();
   });
 
   app.listen(APP_CONFIG.listenTo);
