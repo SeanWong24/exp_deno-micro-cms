@@ -9,20 +9,24 @@ import {
 const router = new Router();
 
 router
-  .get("/:key", async (ctx) => {
-    ctx.response.body = await getBlob(ctx.params.key);
+  .get("/:key",async (ctx) => {
+    const {content, contentType} = await getBlob(ctx.params.key);
+    contentType && ctx.response.headers.set('Content-Type', contentType);
+    ctx.response.body = content;
   })
   .post("/:key", async (ctx) => {
     await createBlob(
       ctx.params.key,
-      ctx.request.body({ type: "stream" }).value
+      ctx.request.body({ type: "stream" }).value,
+      ctx.request.headers.get('Content-Type')
     );
     ctx.response.body = "Done";
   })
   .put("/:key", async (ctx) => {
     await updateBlob(
       ctx.params.key,
-      ctx.request.body({ type: "stream" }).value
+      ctx.request.body({ type: "stream" }).value,
+      ctx.request.headers.get('Content-Type')
     );
     ctx.response.body = "Done";
   })

@@ -14,50 +14,48 @@ export async function getBlob(key: string) {
   if(!await checkIfBlobExists(key)) {
     throw new HttpError("The blob does not exists.");
   }
+  const contentType = (await kv.get(keyPrefix.concat(key).concat('content-type'))).value as string | null | undefined;
+  let buffer: Uint8Array | undefined = void 0;
   if(config.BLOB_PATH) {
-    using file = await Deno.open(path.join(config.BLOB_PATH, key), {read: true});
-    return file.readable;
+    buffer = await Deno.readFile(path.join(config.BLOB_PATH, key));
   }
-  return kvBlob.get(kv, keyPrefix.concat(key), {stream:true});
+  return {
+    content: buffer ?? kvBlob.get(kv, keyPrefix.concat(key), {stream:true}), 
+    contentType
+  };
 }
 
-export async function createBlob(key: string, value: ReadableStream<Uint8Array>) {
+export async function createBlob(key: string, value: ReadableStream<Uint8Array>, contentType?: string | null) {
   if (await checkIfBlobExists(key)) {
     throw new HttpError("The blob already exists.");
   }
-  await setblob(key, value);
+  await setblob(key, value, contentType?? void 0);
 }
 
-export async function updateBlob(key: string, value: ReadableStream<Uint8Array>) {
-  if (await checkIfBlobExists(key)) {
+export async function updateBlob(key: string, value: ReadableStream<Uint8Array>, contentType?: string| null) {
+  if (!await checkIfBlobExists(key)) {
     throw new HttpError("The blob does not exists.");
   }
-  await setblob(key, value);
+  await setblob(key, value, contentType?? void 0);
 }
 
 export async function deleteBlob(key: string) {
+  await kv.delete(keyPrefix.concat(key).concat('content-type'));
   if(config.BLOB_PATH) {
     return await Deno.remove(path.join(config.BLOB_PATH, key));
   }
-  return await kvBlob.remove(kv, keyPrefix.concat(key));
+  await kvBlob.remove(kv, keyPrefix.concat(key));
 }
 
 async function checkIfBlobExists(key: string) {
-  if(config.BLOB_PATH) {
-    try {
-      return (await Deno.stat(path.join(config.BLOB_PATH, key))).isFile
-    } catch(e) {
-      if(e instanceof Deno.errors.NotFound) {
-        return false;
-      }
-    }
-  }
-  return (await kvBlob.get(kv, keyPrefix.concat(key))) != null;
+  return (await kv.get(keyPrefix.concat(key).concat('content-type'))).versionstamp != null;
 }
 
-async function setblob(key: string, value: ReadableStream<Uint8Array>) {
+async function setblob(key: string, value: ReadableStream<Uint8Array>, contentType?: string) {
+  await kv.set(keyPrefix.concat(key).concat('content-type'), contentType);
   if(config.BLOB_PATH) {
-    return await Deno.writeFile(path.join(config.BLOB_PATH, key), value);
+    await Deno.writeFile(path.join(config.BLOB_PATH, key), value);
+    return;
   }
-  return await kvBlob.set(kv,  keyPrefix.concat(key), value);
+  await kvBlob.set(kv, keyPrefix.concat(key), value);
 }
