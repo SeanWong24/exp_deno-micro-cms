@@ -1,9 +1,10 @@
 import { Router } from "oak";
+import authMiddleware from "../middleware/auth.ts";
 import {
-  getInfo,
   createInfo,
-  updateInfo,
   deleteInfo,
+  getInfo,
+  updateInfo,
 } from "../service/info.ts";
 import { ResponseBody } from "https://deno.land/x/oak@v12.6.2/response.ts";
 
@@ -13,19 +14,19 @@ router
   .get("/:key", async (ctx) => {
     ctx.response.body = (await getInfo(ctx.params.key)) as ResponseBody;
   })
-  .post("/:key", async (ctx) => {
+  .post("/:key", authMiddleware, async (ctx) => {
     ctx.response.body = (await createInfo(
       ctx.params.key,
-      await ctx.request.body({ type: "json" }).value
+      await ctx.request.body({ type: "json" }).value,
     )) as ResponseBody;
   })
-  .put("/:key", async (ctx) => {
+  .put("/:key", authMiddleware, async (ctx) => {
     ctx.response.body = (await updateInfo(
       ctx.params.key,
-      await ctx.request.body({ type: "json" }).value
+      await ctx.request.body({ type: "json" }).value,
     )) as ResponseBody;
   })
-  .delete("/:key", async (ctx) => {
+  .delete("/:key", authMiddleware, async (ctx) => {
     await deleteInfo(ctx.params.key);
     ctx.response.body = "Done";
   });
