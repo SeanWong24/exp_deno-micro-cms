@@ -1,6 +1,6 @@
 import * as path from "$std/path/mod.ts";
 import { HttpError } from "oak";
-import * as kvBlob from "kv-toolbox/blob.ts";
+import * as kvBlob from "$kv-toolbox/blob.ts";
 import kv from "./kv.ts";
 import config from "./config.ts";
 
