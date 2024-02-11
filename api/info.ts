@@ -17,13 +17,13 @@ router
   .post("/:key", authMiddleware, async (ctx) => {
     ctx.response.body = (await createInfo(
       ctx.params.key,
-      await ctx.request.body({ type: "json" }).value,
+      await ctx.request.body().value,
     )) as ResponseBody;
   })
   .put("/:key", authMiddleware, async (ctx) => {
     ctx.response.body = (await updateInfo(
       ctx.params.key,
-      await ctx.request.body({ type: "json" }).value,
+      await ctx.request.body().value,
     )) as ResponseBody;
   })
   .delete("/:key", authMiddleware, async (ctx) => {

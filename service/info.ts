@@ -16,7 +16,7 @@ export async function createInfo(key: string, value: unknown) {
 }
 
 export async function updateInfo(key: string, value: unknown) {
-  if (await checkIfInfoExists(key)) {
+  if (!await checkIfInfoExists(key)) {
     throw new HttpError("The key does not exists.");
   }
   setInfo(key, value);
