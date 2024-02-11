@@ -23,7 +23,7 @@ router
     });
     ctx.response.body = "Signed in.";
   })
-  .put("/sign-out", (ctx) => {
+  .post("/sign-out", (ctx) => {
     const domain = getOriginalHostWithoutPort(ctx.request);
     ctx.cookies.delete("authenticated", {
       domain,
