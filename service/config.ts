@@ -3,7 +3,8 @@ const config = {
   CORS: Deno.env.get("CORS"),
   BLOB_PATH: Deno.env.get("BLOB_PATH"),
   PASSCODE: Deno.env.get("PASSCODE"),
-  ADMIN_UI: Deno.env.get("ADMIN_UI")
+  ADMIN_UI: Deno.env.get("ADMIN_UI"),
+  PORT: Deno.env.get('PORT') ?? '8000'
 };
 
 export default config;

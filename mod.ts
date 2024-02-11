@@ -5,9 +5,9 @@ import router from "./router.ts";
 
 const app = new Application();
 
-if(config.CORS) {
-  app.use(oakCors({origin: new RegExp(config.CORS)}));
+if (config.CORS) {
+  app.use(oakCors({ origin: new RegExp(config.CORS) }));
 }
 app.use(router.routes());
 
-await app.listen({ port: 8000 });
+await app.listen({ port: +config.PORT });
