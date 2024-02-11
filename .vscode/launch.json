@@ -10,7 +10,7 @@
             "type": "node",
             "program": "${workspaceFolder}/mod.ts",
             "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "/snap/bin/deno",
+            "runtimeExecutable": "deno",
             "runtimeArgs": [
                 "run",
                 "--inspect-wait",
