@@ -1,3 +1,4 @@
 /.env
-/data
-/www
+/data/
+/www/
+/temp/

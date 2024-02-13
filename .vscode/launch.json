@@ -18,6 +18,21 @@
             ],
             "envFile": "${workspaceFolder}/.env",
             "attachSimplePort": 9229
+        },
+        {
+            "request": "launch",
+            "name": "Launch Test",
+            "type": "node",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "test",
+                "--inspect-wait",
+                "--allow-all",
+                "--fail-fast"
+            ],
+            "envFile": "${workspaceFolder}/.env.test",
+            "attachSimplePort": 9229
         }
     ]
 }

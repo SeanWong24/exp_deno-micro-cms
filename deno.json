@@ -1,9 +1,11 @@
 {
-    "name": "backend",
-    "version": "0.0.0",
-    "importMap": "./import_map.json",
-    "unstable": ["kv"],
-    "tasks": {
-        "dev": "deno run -A --env=.env mod.ts"
-    }
+  "name": "backend",
+  "version": "0.0.0",
+  "importMap": "./import_map.json",
+  "unstable": ["kv"],
+  "tasks": {
+    "dev": "deno run -A --env=.env mod.ts",
+    "test": "deno test -A --env=.env.test",
+    "test:quite": "deno test -Aq --env=.env.test"
+  }
 }
