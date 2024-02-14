@@ -6,6 +6,7 @@
   "tasks": {
     "dev": "deno run -A --env=.env mod.ts",
     "test": "deno test -A --env=.env.test",
-    "test:quite": "deno test -Aq --env=.env.test"
+    "test:quite": "deno test -Aq --env=.env.test",
+    "doc:openapi": "deno run -A openapi.ts"
   }
 }

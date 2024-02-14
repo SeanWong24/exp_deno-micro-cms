@@ -9,12 +9,56 @@ import {
 
 const router = new Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Blob
+ */
+
 router
+  /**
+   * @openapi
+   * /blob/{key}:
+   *  get:
+   *    tags:
+   *      - Blob
+   *    description: Get a blob with a key.
+   *    parameters:
+   *      - name: key
+   *        in: path
+   *        required: true
+   *        schema:
+   *          type: string
+   *    responses:
+   *      200:
+   *        description: The requested blob.
+   *      500:
+   *        description: Failed to get.
+   */
   .get("/:key", async (ctx) => {
     const { content, contentType } = await getBlob(ctx.params.key);
     contentType && ctx.response.headers.set("Content-Type", contentType);
     ctx.response.body = content;
   })
+  /**
+   * @openapi
+   * /blob/{key}:
+   *  post:
+   *    tags:
+   *      - Blob
+   *    description: Create a blob with a key.
+   *    parameters:
+   *      - name: key
+   *        in: path
+   *        required: true
+   *        schema:
+   *          type: string
+   *    responses:
+   *      200:
+   *        description: Done.
+   *      500:
+   *        description: Failed.
+   */
   .post("/:key", authMiddleware, async (ctx) => {
     await createBlob(
       ctx.params.key,
@@ -23,6 +67,25 @@ router
     );
     ctx.response.body = "Done";
   })
+  /**
+   * @openapi
+   * /blob/{key}:
+   *  put:
+   *    tags:
+   *      - Blob
+   *    description: Update a blob with a key.
+   *    parameters:
+   *      - name: key
+   *        in: path
+   *        required: true
+   *        schema:
+   *          type: string
+   *    responses:
+   *      200:
+   *        description: Done.
+   *      500:
+   *        description: Failed.
+   */
   .put("/:key", authMiddleware, async (ctx) => {
     await updateBlob(
       ctx.params.key,
@@ -31,6 +94,23 @@ router
     );
     ctx.response.body = "Done";
   })
+  /**
+   * @openapi
+   * /blob/{key}:
+   *  delete:
+   *    tags:
+   *      - Blob
+   *    description: Delete a blob with a key.
+   *    parameters:
+   *      - name: key
+   *        in: path
+   *        required: true
+   *        schema:
+   *          type: string
+   *    responses:
+   *      200:
+   *        description: Done.
+   */
   .delete("/:key", authMiddleware, async (ctx) => {
     await deleteBlob(ctx.params.key);
     ctx.response.body = "Done";
