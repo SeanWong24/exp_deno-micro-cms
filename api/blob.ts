@@ -32,8 +32,6 @@ router
    *    responses:
    *      200:
    *        description: The requested blob.
-   *      500:
-   *        description: Failed to get.
    */
   .get("/:key", async (ctx) => {
     const { content, contentType } = await getBlob(ctx.params.key) ?? {};
@@ -55,6 +53,8 @@ router
    *        required: true
    *        schema:
    *          type: string
+   *    requestBody:
+   *      required: true
    *    responses:
    *      200:
    *        description: Done.
@@ -84,6 +84,8 @@ router
    *        required: true
    *        schema:
    *          type: string
+   *    requestBody:
+   *      required: true
    *    responses:
    *      200:
    *        description: Done.

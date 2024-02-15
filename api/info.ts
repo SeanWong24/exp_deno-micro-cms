@@ -33,8 +33,6 @@ router
    *    responses:
    *      200:
    *        description: The requested info.
-   *      500:
-   *        description: Failed to get.
    */
   .get("/:key", async (ctx) => {
     ctx.response.body = (await getInfo(ctx.params.key)) as ResponseBody;
@@ -54,11 +52,11 @@ router
    *        required: true
    *        schema:
    *          type: string
+   *    requestBody:
+   *      required: true
    *    responses:
    *      200:
    *        description: Done.
-   *      500:
-   *        description: Failed.
    */
   .post("/:key", authMiddleware, async (ctx) => {
     await createInfo(
@@ -82,11 +80,11 @@ router
    *        required: true
    *        schema:
    *          type: string
+   *    requestBody:
+   *      required: true
    *    responses:
    *      200:
    *        description: Done.
-   *      500:
-   *        description: Failed.
    */
   .put("/:key", authMiddleware, async (ctx) => {
     await updateInfo(
