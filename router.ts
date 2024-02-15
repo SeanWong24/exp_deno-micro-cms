@@ -18,22 +18,27 @@ apiRouter.use("/auth", authRouter.routes(), authRouter.allowedMethods())
 const staticRouter = new Router();
 if (config.ADMIN_UI) {
   const [filePath, indexPath, fallbackPath] = config.ADMIN_UI.split(",");
-  staticRouter.get(
-    "/admin(/.*)?",
-    async (ctx) => {
-      try {
-        await ctx.send({
-          root: filePath,
-          index: indexPath || void 0,
-          path: ctx.request.url.pathname.substring("/admin".length),
-        });
-      } catch (e) {
-        if (e instanceof errors.NotFound) {
-          await ctx.send({ root: filePath, path: fallbackPath || void 0 });
+  staticRouter
+    .get(
+      "/admin",
+      async (ctx) => {
+        if (ctx.request.url.pathname === "/admin") {
+          ctx.response.redirect("/admin/");
+          return;
         }
-      }
-    },
-  );
+        try {
+          await ctx.send({
+            root: filePath,
+            index: indexPath || void 0,
+            path: ctx.request.url.pathname.substring("/admin".length),
+          });
+        } catch (e) {
+          if (e instanceof errors.NotFound) {
+            await ctx.send({ root: filePath, path: fallbackPath || void 0 });
+          }
+        }
+      },
+    );
 }
 
 const router = new Router();
