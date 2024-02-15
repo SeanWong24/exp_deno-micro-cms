@@ -16,29 +16,32 @@ apiRouter.use("/auth", authRouter.routes(), authRouter.allowedMethods())
   });
 
 const staticRouter = new Router();
-if (config.ADMIN_UI) {
-  const [filePath, indexPath, fallbackPath] = config.ADMIN_UI.split(",");
-  staticRouter
-    .get(
-      "/admin",
-      async (ctx) => {
-        if (ctx.request.url.pathname === "/admin") {
-          ctx.response.redirect("/admin/");
-          return;
-        }
-        try {
-          await ctx.send({
-            root: filePath,
-            index: indexPath || void 0,
-            path: ctx.request.url.pathname.substring("/admin".length),
-          });
-        } catch (e) {
-          if (e instanceof errors.NotFound) {
-            await ctx.send({ root: filePath, path: fallbackPath || void 0 });
+if (config.FRONTENDS) {
+  const frontends = config.FRONTENDS.split(":");
+  for (const frontend of frontends) {
+    const [routerPath, filePath, indexPath, fallbackPath] = frontend.split(",");
+    staticRouter
+      .get(
+        `${routerPath}(/.*)?`,
+        async (ctx) => {
+          if (ctx.request.url.pathname === routerPath && !  routerPath.endsWith('/')) {
+            ctx.response.redirect(`${routerPath}/`);
+            return;
           }
-        }
-      },
-    );
+          try {
+            await ctx.send({
+              root: filePath,
+              index: indexPath || void 0,
+              path: ctx.request.url.pathname.substring(routerPath.length),
+            });
+          } catch (e) {
+            if (e instanceof errors.NotFound) {
+              await ctx.send({ root: filePath, path: fallbackPath || void 0 });
+            }
+          }
+        },
+      );
+  }
 }
 
 const router = new Router();

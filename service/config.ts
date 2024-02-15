@@ -3,7 +3,7 @@ type AppConfigKeys =
   | "CORS"
   | "BLOB_PATH"
   | "PASSCODE"
-  | "ADMIN_UI"
+  | "FRONTENDS"
   | "PORT";
 
 export type AppConfig = Partial<Record<AppConfigKeys, string>>;
@@ -13,7 +13,7 @@ const config: AppConfig = {
   CORS: Deno.env.get("CORS"),
   BLOB_PATH: Deno.env.get("BLOB_PATH"),
   PASSCODE: Deno.env.get("PASSCODE"),
-  ADMIN_UI: Deno.env.get("ADMIN_UI"),
+  FRONTENDS: Deno.env.get("FRONTENDS"),
   PORT: Deno.env.get("PORT"),
 };
 
