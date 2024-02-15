@@ -14,9 +14,11 @@ const options = {
   apis: ["./api/*.ts"],
 };
 
-const openapiSpecification = swaggerJsDoc(options);
+export const openapiSpecification = swaggerJsDoc(options);
 
-await Deno.writeTextFile(
-  "./openapi.json",
-  JSON.stringify(openapiSpecification),
-);
+if (import.meta.main) {
+  await Deno.writeTextFile(
+    "./openapi.json",
+    JSON.stringify(openapiSpecification),
+  );
+}
