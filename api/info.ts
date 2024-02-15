@@ -59,10 +59,11 @@ router
    *        description: Failed.
    */
   .post("/:key", authMiddleware, async (ctx) => {
-    ctx.response.body = (await createInfo(
+    await createInfo(
       ctx.params.key,
       await ctx.request.body().value,
-    )) as ResponseBody;
+    );
+    ctx.response.body = "Done";
   })
   /**
    * @openapi
@@ -84,10 +85,11 @@ router
    *        description: Failed.
    */
   .put("/:key", authMiddleware, async (ctx) => {
-    ctx.response.body = (await updateInfo(
+    await updateInfo(
       ctx.params.key,
       await ctx.request.body().value,
-    )) as ResponseBody;
+    );
+    ctx.response.body = "Done";
   })
   /**
    * @openapi

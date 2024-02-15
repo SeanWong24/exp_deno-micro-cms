@@ -36,7 +36,7 @@ router
    *        description: Failed to get.
    */
   .get("/:key", async (ctx) => {
-    const { content, contentType } = await getBlob(ctx.params.key);
+    const { content, contentType } = await getBlob(ctx.params.key) ?? {};
     contentType && ctx.response.headers.set("Content-Type", contentType);
     ctx.response.body = content;
   })

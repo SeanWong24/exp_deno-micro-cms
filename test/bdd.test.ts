@@ -62,7 +62,7 @@ describe("Info", () => {
     await request.get("/api/info/foo").expect(Status.NoContent);
   });
 
-  it("Set without authentication", async () => {
+  it("Create without authentication", async () => {
     const request = await superoak(app);
     await request.post("/api/info/foo")
       .set("Content-Type", "text/plain")
@@ -70,13 +70,13 @@ describe("Info", () => {
       .expect(Status.Forbidden);
   });
 
-  it("Set with authentication", async () => {
+  it("Create with authentication", async () => {
     let request = await superoak(app);
     await request.post("/api/info/foo")
       .set("Cookie", "authenticated=1")
       .set("Content-Type", "text/plain")
       .send("Bar")
-      .expect(Status.NoContent);
+      .expect(Status.OK);
     request = await superoak(app);
     await request.get("/api/info/foo").expect(Status.OK, "Bar");
   });
@@ -95,7 +95,7 @@ describe("Info", () => {
       .set("Cookie", "authenticated=1")
       .set("Content-Type", "text/plain")
       .send("bar")
-      .expect(Status.NoContent);
+      .expect(Status.OK);
     request = await superoak(app);
     await request.get("/api/info/foo").expect(Status.OK, "bar");
   });
@@ -132,10 +132,10 @@ describe("Blob", () => {
 
   it("No content", async () => {
     const request = await superoak(app);
-    await request.get("/api/blob/foo").expect(Status.InternalServerError);
+    await request.get("/api/blob/foo").expect(Status.NoContent);
   });
 
-  it("Set without authentication", async () => {
+  it("Create without authentication", async () => {
     const request = await superoak(app);
     await request.post("/api/blob/foo")
       .set("Content-Type", "application/typescript")
@@ -143,7 +143,7 @@ describe("Blob", () => {
       .expect(Status.Forbidden);
   });
 
-  it("Set with authentication", async () => {
+  it("Create with authentication", async () => {
     let request = await superoak(app);
     await request.post("/api/blob/foo")
       .set("Cookie", "authenticated=1")
@@ -199,6 +199,6 @@ describe("Blob", () => {
       .set("Cookie", "authenticated=1")
       .expect(Status.OK);
     request = await superoak(app);
-    await request.get("/api/blob/foo").expect(Status.InternalServerError);
+    await request.get("/api/blob/foo").expect(Status.NoContent);
   });
 });
