@@ -10,9 +10,9 @@ import {
 const router = new Router();
 
 /**
- * @swagger
+ * @openapi
  * tags:
- *   name: Blob
+ *  name: Blob
  */
 
 router
@@ -46,6 +46,8 @@ router
    *  post:
    *    tags:
    *      - Blob
+   *    security:
+   *      - cookieAuth: []
    *    description: Create a blob with a key.
    *    parameters:
    *      - name: key
@@ -73,6 +75,8 @@ router
    *  put:
    *    tags:
    *      - Blob
+   *    security:
+   *      - cookieAuth: []
    *    description: Update a blob with a key.
    *    parameters:
    *      - name: key
@@ -100,6 +104,8 @@ router
    *  delete:
    *    tags:
    *      - Blob
+   *    security:
+   *      - cookieAuth: []
    *    description: Delete a blob with a key.
    *    parameters:
    *      - name: key

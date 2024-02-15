@@ -6,9 +6,19 @@ import { getOriginalHostWithoutPort } from "../service/utils.ts";
 const router = new Router();
 
 /**
- * @swagger
+ * @openapi
  * tags:
- *   name: Auth
+ *  name: Auth
+ */
+
+/**
+ * @openapi
+ * components:
+ *  securitySchemes:
+ *    cookieAuth:
+ *      type: apiKey
+ *      in: cookie
+ *      name: authenticated
  */
 
 router
@@ -18,6 +28,8 @@ router
    *  get:
    *    tags:
    *      - Auth
+   *    security:
+   *      - cookieAuth: []
    *    description: Determine if the current session is authenticated by checking the authentication cookie.
    *    responses:
    *      200:
@@ -44,6 +56,10 @@ router
    *    responses:
    *      200:
    *        description: Succeed to sign in.
+   *        headers:
+   *          Set-Cookie:
+   *            schema:
+   *              type: string
    *      403:
    *        description: Fail to sign in.
    */
@@ -71,6 +87,10 @@ router
    *    responses:
    *      200:
    *        description: Signed out.
+   *        headers:
+   *          Set-Cookie:
+   *            schema:
+   *              type: string
    */
   .post("/sign-out", (ctx) => {
     const domain = getOriginalHostWithoutPort(ctx.request);

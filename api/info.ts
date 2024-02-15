@@ -11,9 +11,9 @@ import { ResponseBody } from "https://deno.land/x/oak@v12.6.2/response.ts";
 const router = new Router();
 
 /**
- * @swagger
+ * @openapi
  * tags:
- *   name: Info
+ *  name: Info
  */
 
 router
@@ -45,6 +45,8 @@ router
    *  post:
    *    tags:
    *      - Info
+   *    security:
+   *      - cookieAuth: []
    *    description: Create info with a key.
    *    parameters:
    *      - name: key
@@ -71,6 +73,8 @@ router
    *  put:
    *    tags:
    *      - Info
+   *    security:
+   *      - cookieAuth: []
    *    description: Update info with a key.
    *    parameters:
    *      - name: key
@@ -97,6 +101,8 @@ router
    *  delete:
    *    tags:
    *      - Info
+   *    security:
+   *      - cookieAuth: []
    *    description: Delete info with a key.
    *    parameters:
    *      - name: key
