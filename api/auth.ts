@@ -64,16 +64,18 @@ router
    *        description: Fail to sign in.
    */
   .post("/sign-in", (ctx) => {
-    const domain = getOriginalHostWithoutPort(ctx.request);
+    const isCORS = config.CORS &&
+      (ctx.request.headers.get("Sec-Fetch-Site") !== "same-origin");
     const passcode = ctx.request.url.searchParams.get("passcode");
     if (passcode != config.PASSCODE) {
       ctx.throw(Status.Forbidden);
     }
     ctx.cookies.set("authenticated", "1", {
-      domain,
+      domain: isCORS ? getOriginalHostWithoutPort(ctx.request) : undefined,
       path: "/",
       httpOnly: true,
-      sameSite: config.CORS ? "none" : "lax",
+      sameSite: isCORS ? "none" : "lax",
+      secure: isCORS ? true : undefined,
     });
     ctx.response.body = "Signed in.";
   })
@@ -93,12 +95,14 @@ router
    *              type: string
    */
   .post("/sign-out", (ctx) => {
-    const domain = getOriginalHostWithoutPort(ctx.request);
+    const isCORS = config.CORS &&
+      (ctx.request.headers.get("Sec-Fetch-Site") !== "same-origin");
     ctx.cookies.delete("authenticated", {
-      domain,
+      domain: isCORS ? getOriginalHostWithoutPort(ctx.request) : undefined,
       path: "/",
       httpOnly: true,
-      sameSite: config.CORS ? "none" : "lax",
+      sameSite: isCORS ? "none" : "lax",
+      secure: isCORS ? true : undefined,
     });
     ctx.response.body = "Signed out.";
   });
