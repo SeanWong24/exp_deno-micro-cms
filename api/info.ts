@@ -1,4 +1,4 @@
-import { Router } from "oak";
+import { ResponseBody, Router } from "../deps/oak.ts";
 import authMiddleware from "../middleware/auth.ts";
 import {
   createInfo,
@@ -7,7 +7,6 @@ import {
   getInfoKeys,
   updateInfo,
 } from "../service/info.ts";
-import { ResponseBody } from "$oak/response.ts";
 
 const router = new Router();
 

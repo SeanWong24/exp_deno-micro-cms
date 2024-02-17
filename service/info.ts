@@ -1,4 +1,4 @@
-import { HttpError } from "oak";
+import { HttpError } from "../deps/oak.ts";
 import kv from "./kv.ts";
 
 const keyPrefix = ["info"];

@@ -1,7 +1,6 @@
 {
   "name": "backend",
   "version": "0.0.0",
-  "importMap": "./import_map.json",
   "unstable": ["kv"],
   "tasks": {
     "dev": "deno run -A --env=.env mod.ts",

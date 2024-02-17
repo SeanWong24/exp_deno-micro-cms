@@ -1,5 +1,5 @@
-import { Application } from "oak";
-import { oakCors } from "cors";
+import { Application } from "./deps/oak.ts";
+import { oakCors } from "./deps/cors.ts";
 import config, { AppConfig } from "./service/config.ts";
 import router from "./router.ts";
 

@@ -1,4 +1,4 @@
-import swaggerJsDoc from "swagger-jsdoc";
+import swaggerJsDoc from "npm:swagger-jsdoc";
 
 const options = {
   definition: {

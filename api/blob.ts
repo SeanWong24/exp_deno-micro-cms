@@ -1,4 +1,4 @@
-import { Router } from "oak";
+import { Router } from "../deps/oak.ts";
 import authMiddleware from "../middleware/auth.ts";
 import {
   createBlob,

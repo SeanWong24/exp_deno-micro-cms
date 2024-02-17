@@ -1,9 +1,10 @@
-import { beforeAll, describe, it } from "$std/testing/bdd.ts";
-import * as path from "$std/path/mod.ts";
-import { superoak } from "https://deno.land/x/superoak@4.8.1/mod.ts";
+import { bddTesting, path } from "../deps/std.ts";
+import { Status } from "../deps/oak.ts";
+import { superoak } from "../deps/superoak.ts";
 import { app } from "../mod.ts";
-import { Status } from "$oak/deps.ts";
 import config from "../service/config.ts";
+
+const { beforeAll, describe, it } = bddTesting;
 
 function initDB() {
   const dbPath = config.DB_PATH;

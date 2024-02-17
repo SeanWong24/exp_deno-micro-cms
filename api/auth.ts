@@ -1,7 +1,6 @@
-import { Router, Status } from "oak";
+import { Router, Status } from "../deps/oak.ts";
 import config from "../service/config.ts";
 import authMiddleware from "../middleware/auth.ts";
-import { getOriginalHostWithoutPort } from "../service/utils.ts";
 
 const router = new Router();
 

@@ -1,5 +1,4 @@
-import { Router } from "oak";
-import { errors } from "$oak/deps.ts";
+import { errors, Router } from "./deps/oak.ts";
 import config from "./service/config.ts";
 import authRouter from "./api/auth.ts";
 import infoRouter from "./api/info.ts";
@@ -24,7 +23,9 @@ if (config.FRONTENDS) {
       .get(
         `${routerPath}(/.*)?`,
         async (ctx) => {
-          if (ctx.request.url.pathname === routerPath && !  routerPath.endsWith('/')) {
+          if (
+            ctx.request.url.pathname === routerPath && !routerPath.endsWith("/")
+          ) {
             ctx.response.redirect(`${routerPath}/`);
             return;
           }

@@ -1,4 +1,4 @@
-import * as path from "$std/path/mod.ts";
+import { path } from "../deps/std.ts";
 import config from "./config.ts";
 
 if (config.DB_PATH) {
