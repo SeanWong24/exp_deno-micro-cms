@@ -1,19 +1,28 @@
 import { Application } from "./deps/oak.ts";
 import { oakCors } from "./deps/cors.ts";
 import config, { AppConfig } from "./service/config.ts";
-import router from "./router.ts";
+import { initializeRouter } from "./router.ts";
+import { initializeKvService } from "./service/kv.ts";
+import { initializeBlobService } from "./service/blob.ts";
 
 export const app = new Application();
 
-if (config.CORS) {
-  app.use(oakCors({ origin: new RegExp(config.CORS), credentials: true }));
-}
-app.use(router.routes());
+export async function startApp(appConfig: AppConfig = {}) {
+  Object.assign(config, appConfig);
 
-export async function startApp(config: AppConfig = {}) {
+  if (config.CORS) {
+    app.use(oakCors({ origin: new RegExp(config.CORS), credentials: true }));
+  }
+
+  const router = initializeRouter();
+  await initializeKvService();
+  await initializeBlobService();
+
+  app.use(router.routes());
+
   await app.listen({ port: config.PORT ? +config.PORT : 8000 });
 }
 
 if (import.meta.main) {
-  await startApp(config);
+  await startApp();
 }

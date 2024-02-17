@@ -1,11 +1,13 @@
 import { path } from "../deps/std.ts";
 import { HttpError } from "../deps/oak.ts";
 import { blob as kvBlob } from "../deps/kv-toolbox.ts";
-import kv from "./kv.ts";
 import config from "./config.ts";
+import kv from "./kv.ts";
 
-if (config.BLOB_PATH) {
-  await Deno.mkdir(config.BLOB_PATH, { recursive: true });
+export async function initializeBlobService() {
+  if (config.BLOB_PATH) {
+    await Deno.mkdir(config.BLOB_PATH, { recursive: true });
+  }
 }
 
 const keyPrefix = ["blob"];
