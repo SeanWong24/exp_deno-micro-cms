@@ -6,7 +6,7 @@ import router from "./router.ts";
 export const app = new Application();
 
 if (config.CORS) {
-  app.use(oakCors({ origin: new RegExp(config.CORS) }));
+  app.use(oakCors({ origin: new RegExp(config.CORS), credentials: true }));
 }
 app.use(router.routes());
 
