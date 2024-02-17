@@ -3,6 +3,18 @@ import kv from "./kv.ts";
 
 const keyPrefix = ["info"];
 
+export async function getInfoKeys() {
+  const list = kv.list({ prefix: keyPrefix });
+  const result: Set<Deno.KvKeyPart> = new Set();
+  for await (const item of list) {
+    const key = item.key.at(keyPrefix.length);
+    if (key) {
+      result.add(key);
+    }
+  }
+  return result;
+}
+
 export async function getInfo(key: string) {
   const info = await kv.get(keyPrefix.concat(key));
   return info.value;

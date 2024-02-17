@@ -4,9 +4,10 @@ import {
   createInfo,
   deleteInfo,
   getInfo,
+  getInfoKeys,
   updateInfo,
 } from "../service/info.ts";
-import { ResponseBody } from "https://deno.land/x/oak@v12.6.2/response.ts";
+import { ResponseBody } from "$oak/response.ts";
 
 const router = new Router();
 
@@ -17,6 +18,20 @@ const router = new Router();
  */
 
 router
+  /**
+   * @openapi
+   * /info:
+   *  get:
+   *    tags:
+   *      - Info
+   *    description: Get list of info keys.
+   *    responses:
+   *      200:
+   *        description: The list of info keys.
+   */
+  .get("/", async (ctx) => {
+    ctx.response.body = [...await getInfoKeys()];
+  })
   /**
    * @openapi
    * /info/{key}:

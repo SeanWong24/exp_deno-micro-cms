@@ -10,6 +10,18 @@ if (config.BLOB_PATH) {
 
 const keyPrefix = ["blob"];
 
+export async function getBlobKeys() {
+  const list = kv.list({ prefix: keyPrefix });
+  const result: Set<Deno.KvKeyPart> = new Set();
+  for await (const item of list) {
+    const key = item.key.at(keyPrefix.length);
+    if (key) {
+      result.add(key);
+    }
+  }
+  return result;
+}
+
 export async function getBlob(key: string) {
   if (!await checkIfBlobExists(key)) {
     return;

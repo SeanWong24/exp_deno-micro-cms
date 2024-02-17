@@ -4,6 +4,7 @@ import {
   createBlob,
   deleteBlob,
   getBlob,
+  getBlobKeys,
   updateBlob,
 } from "../service/blob.ts";
 
@@ -16,6 +17,20 @@ const router = new Router();
  */
 
 router
+  /**
+   * @openapi
+   * /blob:
+   *  get:
+   *    tags:
+   *      - Blob
+   *    description: Get list of blob keys.
+   *    responses:
+   *      200:
+   *        description: The list of blob keys.
+   */
+  .get("/", async (ctx) => {
+    ctx.response.body = [...await getBlobKeys()];
+  })
   /**
    * @openapi
    * /blob/{key}:

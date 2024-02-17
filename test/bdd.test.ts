@@ -57,6 +57,11 @@ describe("Info", () => {
     initDB();
   });
 
+  it("List keys without item", async () => {
+    const request = await superoak(app);
+    await request.get("/api/info").expect([]);
+  });
+
   it("No content", async () => {
     const request = await superoak(app);
     await request.get("/api/info/foo").expect(Status.NoContent);
@@ -109,6 +114,28 @@ describe("Info", () => {
       .expect(Status.InternalServerError);
   });
 
+  it("List keys with one item", async () => {
+    const request = await superoak(app);
+    await request.get("/api/info").expect(["foo"]);
+  });
+
+  it("List keys with multiple item", async () => {
+    let request = await superoak(app);
+    await request.post("/api/info/1")
+      .set("Cookie", "authenticated=1")
+      .set("Content-Type", "text/plain")
+      .send("1")
+      .expect(Status.OK);
+    request = await superoak(app);
+    await request.post("/api/info/2")
+      .set("Cookie", "authenticated=1")
+      .set("Content-Type", "text/plain")
+      .send("2")
+      .expect(Status.OK);
+    request = await superoak(app);
+    await request.get("/api/info").expect(["1", "2", "foo"]);
+  });
+
   it("Delete without authentication", async () => {
     const request = await superoak(app);
     await request.delete("/api/info/foo")
@@ -123,11 +150,21 @@ describe("Info", () => {
     request = await superoak(app);
     await request.get("/api/info/foo").expect(Status.NoContent);
   });
+
+  it("List keys after deleting the item", async () => {
+    const request = await superoak(app);
+    await request.get("/api/info").expect(["1", "2"]);
+  });
 });
 
 describe("Blob", () => {
   beforeAll(() => {
     initDB();
+  });
+
+  it("List keys without item", async () => {
+    const request = await superoak(app);
+    await request.get("/api/blob").expect([]);
   });
 
   it("No content", async () => {
@@ -187,6 +224,28 @@ describe("Blob", () => {
       .expect(Status.InternalServerError);
   });
 
+  it("List keys with one item", async () => {
+    const request = await superoak(app);
+    await request.get("/api/blob").expect(["foo"]);
+  });
+
+  it("List keys with multiple item", async () => {
+    let request = await superoak(app);
+    await request.post("/api/blob/1")
+      .set("Cookie", "authenticated=1")
+      .set("Content-Type", "text/plain")
+      .send("1")
+      .expect(Status.OK);
+    request = await superoak(app);
+    await request.post("/api/blob/2")
+      .set("Cookie", "authenticated=1")
+      .set("Content-Type", "text/plain")
+      .send("2")
+      .expect(Status.OK);
+    request = await superoak(app);
+    await request.get("/api/blob").expect(["1", "2", "foo"]);
+  });
+
   it("Delete without authentication", async () => {
     const request = await superoak(app);
     await request.delete("/api/blob/foo")
@@ -200,5 +259,10 @@ describe("Blob", () => {
       .expect(Status.OK);
     request = await superoak(app);
     await request.get("/api/blob/foo").expect(Status.NoContent);
+  });
+
+  it("List keys after deleting the item", async () => {
+    const request = await superoak(app);
+    await request.get("/api/blob").expect(["1", "2"]);
   });
 });
