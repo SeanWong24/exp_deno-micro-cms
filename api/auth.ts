@@ -71,11 +71,11 @@ router
       ctx.throw(Status.Forbidden);
     }
     ctx.cookies.set("authenticated", "1", {
-      domain: isCORS ? getOriginalHostWithoutPort(ctx.request) : undefined,
       path: "/",
       httpOnly: true,
       sameSite: isCORS ? "none" : "lax",
       secure: isCORS ? true : undefined,
+      ignoreInsecure: true,
     });
     ctx.response.body = "Signed in.";
   })
@@ -98,11 +98,11 @@ router
     const isCORS = config.CORS &&
       (ctx.request.headers.get("Sec-Fetch-Site") !== "same-origin");
     ctx.cookies.delete("authenticated", {
-      domain: isCORS ? getOriginalHostWithoutPort(ctx.request) : undefined,
       path: "/",
       httpOnly: true,
       sameSite: isCORS ? "none" : "lax",
       secure: isCORS ? true : undefined,
+      ignoreInsecure: true,
     });
     ctx.response.body = "Signed out.";
   });
