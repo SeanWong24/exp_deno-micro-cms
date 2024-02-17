@@ -11,4 +11,6 @@ export async function initializeKvService() {
   kv = await Deno.openKv(config.DB_PATH);
 }
 
-export default kv;
+export function useKv() {
+  return kv;
+}

@@ -1,9 +1,10 @@
 import { HttpError } from "../deps/oak.ts";
-import kv from "./kv.ts";
+import { useKv } from "./kv.ts";
 
 const keyPrefix = ["info"];
 
 export async function getInfoKeys() {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
@@ -19,6 +20,7 @@ export async function getInfoKeys() {
 }
 
 export async function getInfo(key: string) {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
@@ -41,6 +43,7 @@ export async function updateInfo(key: string, value: unknown) {
 }
 
 export async function deleteInfo(key: string) {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
@@ -48,6 +51,7 @@ export async function deleteInfo(key: string) {
 }
 
 async function checkIfInfoExists(key: string) {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
@@ -56,6 +60,7 @@ async function checkIfInfoExists(key: string) {
 }
 
 async function setInfo(key: string, value: unknown) {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }

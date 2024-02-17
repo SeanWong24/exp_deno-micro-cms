@@ -2,7 +2,7 @@ import { path } from "../deps/std.ts";
 import { HttpError } from "../deps/oak.ts";
 import { blob as kvBlob } from "../deps/kv-toolbox.ts";
 import config from "./config.ts";
-import kv from "./kv.ts";
+import { useKv } from "./kv.ts";
 
 export async function initializeBlobService() {
   if (config.BLOB_PATH) {
@@ -13,6 +13,7 @@ export async function initializeBlobService() {
 const keyPrefix = ["blob"];
 
 export async function getBlobKeys() {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
@@ -28,6 +29,7 @@ export async function getBlobKeys() {
 }
 
 export async function getBlob(key: string) {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
@@ -72,6 +74,7 @@ export async function updateBlob(
 }
 
 export async function deleteBlob(key: string) {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
@@ -83,6 +86,7 @@ export async function deleteBlob(key: string) {
 }
 
 async function checkIfBlobExists(key: string) {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
@@ -95,6 +99,7 @@ async function setblob(
   value: ReadableStream<Uint8Array>,
   contentType?: string,
 ) {
+  const kv = useKv();
   if (!kv) {
     throw new HttpError("DB not initialized.");
   }
