@@ -4,14 +4,22 @@ import authRouter from "./api/auth.ts";
 import infoRouter from "./api/info.ts";
 import blobRouter from "./api/blob.ts";
 import { openapiSpecification } from "./openapi.ts";
+import { path } from "./deps/std.ts";
 
 export function initializeRouter() {
   const apiRouter = new Router({ prefix: "/api" });
   apiRouter.use("/auth", authRouter.routes(), authRouter.allowedMethods())
     .use("/info", infoRouter.routes(), infoRouter.allowedMethods())
     .use("/blob", blobRouter.routes(), blobRouter.allowedMethods())
-    .get("/", (ctx) => {
+    .get("/", async (ctx) => {
       ctx.response.headers.set("Content-type", "application/json");
+      if (config.OPENAPI_FILE_PATH) {
+        await ctx.send({
+          root: path.dirname(config.OPENAPI_FILE_PATH),
+          path: config.OPENAPI_FILE_PATH,
+        });
+        return;
+      }
       ctx.response.body = openapiSpecification;
     });
 
