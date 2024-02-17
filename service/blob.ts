@@ -13,6 +13,9 @@ export async function initializeBlobService() {
 const keyPrefix = ["blob"];
 
 export async function getBlobKeys() {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   const list = kv.list({ prefix: keyPrefix });
   const result: Set<Deno.KvKeyPart> = new Set();
   for await (const item of list) {
@@ -25,6 +28,9 @@ export async function getBlobKeys() {
 }
 
 export async function getBlob(key: string) {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   if (!await checkIfBlobExists(key)) {
     return;
   }
@@ -66,6 +72,9 @@ export async function updateBlob(
 }
 
 export async function deleteBlob(key: string) {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   await kv.delete(keyPrefix.concat(key).concat("content-type"));
   if (config.BLOB_PATH) {
     return await Deno.remove(path.join(config.BLOB_PATH, key));
@@ -74,6 +83,9 @@ export async function deleteBlob(key: string) {
 }
 
 async function checkIfBlobExists(key: string) {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   return (await kv.get(keyPrefix.concat(key).concat("content-type")))
     .versionstamp != null;
 }
@@ -83,6 +95,9 @@ async function setblob(
   value: ReadableStream<Uint8Array>,
   contentType?: string,
 ) {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   await kv.set(keyPrefix.concat(key).concat("content-type"), contentType);
   if (config.BLOB_PATH) {
     await Deno.writeFile(path.join(config.BLOB_PATH, key), value);

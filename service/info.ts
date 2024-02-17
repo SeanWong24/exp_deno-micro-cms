@@ -4,6 +4,9 @@ import kv from "./kv.ts";
 const keyPrefix = ["info"];
 
 export async function getInfoKeys() {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   const list = kv.list({ prefix: keyPrefix });
   const result: Set<Deno.KvKeyPart> = new Set();
   for await (const item of list) {
@@ -16,6 +19,9 @@ export async function getInfoKeys() {
 }
 
 export async function getInfo(key: string) {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   const info = await kv.get(keyPrefix.concat(key));
   return info.value;
 }
@@ -35,14 +41,23 @@ export async function updateInfo(key: string, value: unknown) {
 }
 
 export async function deleteInfo(key: string) {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   await kv.delete(keyPrefix.concat(key));
 }
 
 async function checkIfInfoExists(key: string) {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   const info = await kv.get(keyPrefix.concat(key));
   return info.versionstamp != null;
 }
 
 async function setInfo(key: string, value: unknown) {
+  if (!kv) {
+    throw new HttpError("DB not initialized.");
+  }
   return await kv.set(keyPrefix.concat(key), value);
 }
