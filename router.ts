@@ -1,4 +1,4 @@
-import { errors, Router } from "./deps/oak.ts";
+import { httpErrors, Router } from "./deps/oak.ts";
 import config from "./service/config.ts";
 import authRouter from "./api/auth.ts";
 import infoRouter from "./api/info.ts";
@@ -48,7 +48,7 @@ export function initializeRouter() {
                 path: ctx.request.url.pathname.substring(routerPath.length),
               });
             } catch (e) {
-              if (e instanceof errors.NotFound) {
+              if (e instanceof httpErrors.NotFound) {
                 await ctx.send({
                   root: filePath,
                   path: fallbackPath || void 0,

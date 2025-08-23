@@ -1,3 +1,3 @@
-export * from "https://deno.land/x/oak@v12.6.2/deps.ts";
-export * from "https://deno.land/x/oak@v12.6.2/response.ts";
-export * from "https://deno.land/x/oak@v12.6.2/mod.ts";
+// export * from "jsr:@oak/oak@17.1.6/deps";
+// export * from "jsr:@oak/oak@17.1.6/response";
+export * from "jsr:@oak/oak@17.1.6";

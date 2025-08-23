@@ -1,1 +1,1 @@
-export * as blob from 'https://deno.land/x/kv_toolbox@0.6.1/blob.ts';
+export * as blob from 'jsr:@kitsonk/kv-toolbox@0.30.0/blob';

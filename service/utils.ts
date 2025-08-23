@@ -1,4 +1,4 @@
-import { Request as OakRequest } from "../deps/oak.ts";
+import type { Request as OakRequest } from "../deps/oak.ts";
 
 export function getOriginalHost(request: OakRequest) {
   const host = request.headers.get("X-Forwarded-Host") ??

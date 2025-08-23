@@ -1,6 +1,6 @@
 import { Application } from "./deps/oak.ts";
 import { oakCors } from "./deps/cors.ts";
-import config, { AppConfig } from "./service/config.ts";
+import config, { type AppConfig } from "./service/config.ts";
 import { initializeRouter } from "./router.ts";
 import { initializeKvService } from "./service/kv.ts";
 import { initializeBlobService } from "./service/blob.ts";

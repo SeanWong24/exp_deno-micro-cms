@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "deno-micro-cms",
   "version": "0.0.0",
   "unstable": ["kv"],
   "tasks": {
@@ -7,5 +7,6 @@
     "test": "deno test -A --env=.env.test",
     "test:quite": "deno test -Aq --env=.env.test",
     "doc:openapi": "deno run -A openapi.ts"
-  }
+  },
+  "exports": "./mod.ts"
 }

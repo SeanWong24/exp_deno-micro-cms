@@ -1,2 +1,2 @@
-export * as path from "https://deno.land/std@0.214.0/path/mod.ts";
-export * as bddTesting from 'https://deno.land/std@0.214.0/testing/bdd.ts';
+export * as path from "jsr:@std/path@1.1.2";
+export * as bddTesting from "jsr:@std/testing@1.0.15/bdd";
