@@ -79,7 +79,7 @@ router
   .post("/:key", authMiddleware, async (ctx) => {
     await createBlob(
       ctx.params.key,
-      ctx.request.body({ type: "stream" }).value,
+      ctx.request.body.stream ?? new ReadableStream(),
       ctx.request.headers.get("Content-Type"),
     );
     ctx.response.body = "Done";
@@ -110,7 +110,7 @@ router
   .put("/:key", authMiddleware, async (ctx) => {
     await updateBlob(
       ctx.params.key,
-      ctx.request.body({ type: "stream" }).value,
+      ctx.request.body.stream ?? new ReadableStream(),
       ctx.request.headers.get("Content-Type"),
     );
     ctx.response.body = "Done";

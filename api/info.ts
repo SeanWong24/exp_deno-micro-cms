@@ -1,4 +1,4 @@
-import { ResponseBody, Router } from "../deps/oak.ts";
+import { type ResponseBody, Router } from "../deps/oak.ts";
 import authMiddleware from "../middleware/auth.ts";
 import {
   createInfo,
@@ -75,7 +75,7 @@ router
   .post("/:key", authMiddleware, async (ctx) => {
     await createInfo(
       ctx.params.key,
-      await ctx.request.body().value,
+      await ctx.request.body.text(),
     );
     ctx.response.body = "Done";
   })
@@ -103,7 +103,7 @@ router
   .put("/:key", authMiddleware, async (ctx) => {
     await updateInfo(
       ctx.params.key,
-      await ctx.request.body().value,
+      await ctx.request.body.text(),
     );
     ctx.response.body = "Done";
   })
