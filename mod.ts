@@ -7,7 +7,7 @@ import { initializeBlobService } from "./service/blob.ts";
 
 export const app = new Application();
 
-export async function startApp(appConfig: AppConfig = {}) {
+async function initialize(appConfig: AppConfig = {}) {
   Object.assign(config, appConfig);
 
   if (config.CORS) {
@@ -19,10 +19,15 @@ export async function startApp(appConfig: AppConfig = {}) {
   await initializeBlobService();
 
   app.use(router.routes());
+}
 
+export async function startApp(appConfig: AppConfig = {}) {
+  await initialize(appConfig);
   await app.listen({ port: config.PORT ? +config.PORT : 8000 });
 }
 
 if (import.meta.main) {
   await startApp();
 }
+
+export default { fetch: app.fetch };
