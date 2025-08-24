@@ -5,9 +5,9 @@ import { initializeRouter } from "./router.ts";
 import { initializeKvService } from "./service/kv.ts";
 import { initializeBlobService } from "./service/blob.ts";
 
-export const app = new Application();
+const app = new Application();
 
-async function initialize(appConfig: AppConfig = {}) {
+export async function setupApp(appConfig: AppConfig = {}) {
   Object.assign(config, appConfig);
 
   if (config.CORS) {
@@ -19,10 +19,12 @@ async function initialize(appConfig: AppConfig = {}) {
   await initializeBlobService();
 
   app.use(router.routes());
+
+  return app;
 }
 
 export async function startApp(appConfig: AppConfig = {}) {
-  await initialize(appConfig);
+  await setupApp(appConfig);
   await app.listen({ port: config.PORT ? +config.PORT : 8000 });
 }
 
